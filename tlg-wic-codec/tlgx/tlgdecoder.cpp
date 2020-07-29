@@ -212,15 +212,21 @@ namespace tlgx
 				return ret;
 			}
 
+			bool callbackCalled = false;
+
 			tMyStream stream(pIStream);
-			const bool isTLG = TVPCheckTLG(&stream);
+
+			const auto result = TVPLoadTLG(&callbackCalled, [] (void* callbackCalled, tjs_uint w, tjs_uint h) -> bool {
+				*static_cast<bool*>(callbackCalled) = true;
+				return false;
+			}, nullptr, nullptr, &stream);
 
 			// restore stream seek position
 			if (const auto ret = pIStream->Seek(MakeLI(pos.QuadPart), STREAM_SEEK_SET, &pos); FAILED(ret)) {
 				return ret;
 			}
 
-			if (!isTLG) {
+			if (!callbackCalled || result != TLG_ABORT) {
 				// WebP WIC codec does so
 				return WINCODEC_ERR_WRONGSTATE;
 			}
