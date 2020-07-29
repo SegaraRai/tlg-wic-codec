@@ -68,7 +68,7 @@ int TVPLoadTLG5(void *callbackdata,
 		return TLG_ABORT;
 	}
 	
-	int blockcount = (int)((height - 1) / blockheight) + 1;
+	tjs_uint64 blockcount = (tjs_uint64)((height - 1) / blockheight) + 1;
 
 	// skip block size section
 	src->SetPosition(src->GetPosition() + blockcount * sizeof(tjs_uint32));
@@ -549,7 +549,7 @@ TVPLoadTLG(void *callbackdata,
 		// Each string (name and value) must be encoded in utf-8.
 
 		// read raw data size
-		tjs_uint rawlen;
+		tjs_uint32 rawlen;
 		if (!src->ReadI32LE(rawlen)) {
 			return TLG_ERROR;
 		}
@@ -561,7 +561,7 @@ TVPLoadTLG(void *callbackdata,
 		}
 		
 		// seek to meta info data point
-		src->Seek(rawlen + 11 + 4, TJS_BS_SEEK_SET);
+		src->Seek((tjs_uint64)rawlen + 11 + 4, TJS_BS_SEEK_SET);
 
 		// read tag data
 
