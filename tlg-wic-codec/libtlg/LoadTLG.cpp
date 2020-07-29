@@ -527,7 +527,7 @@ int
 TVPLoadTLG(void *callbackdata,
 		   tTVPGraphicSizeCallback sizecallback,
 		   tTVPGraphicScanLineCallback scanlinecallback,
-		   std::map<std::string,std::string> *tags,
+		   std::unordered_map<std::string,std::string> *tags,
 		   tTJSBinaryStream *src)
 {
 	src->Seek(0, TJS_BS_SEEK_SET); // rewind

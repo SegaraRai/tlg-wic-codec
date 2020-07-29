@@ -15,7 +15,7 @@
 #include "tjs.h"
 #include "stream.h"
 #include <string>
-#include <map>
+#include <unordered_map>
 
 //---------------------------------------------------------------------------
 // Graphic Loading Handler Type
@@ -80,7 +80,7 @@ extern int
 TVPLoadTLG(void *callbackdata,
 		   tTVPGraphicSizeCallback sizecallback,
 		   tTVPGraphicScanLineCallback scanlinecallback,
-		   std::map<std::string,std::string> *tags,
+		   std::unordered_map<std::string,std::string> *tags,
 		   tTJSBinaryStream *src);
 
 /**
@@ -101,6 +101,6 @@ TVPSaveTLG(tTJSBinaryStream *dest,
 		   int width, int height, int colors,
 		   void *callbackdata,
 		   tTVPGraphicScanLineCallback scanlinecallback,
-		   const std::map<std::string,std::string> *tags);
+		   const std::unordered_map<std::string,std::string> *tags);
 
 #endif
