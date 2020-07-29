@@ -46,12 +46,12 @@ int TVPLoadTLG5(void *callbackdata,
 
 {
 
-	unsigned char mark[1];
+	unsigned char buf[1];
 	tjs_uint32 width, height, colors, blockheight;
-	if (!src->ReadBuffer(mark, 1)) {
+	if (!src->ReadBuffer(buf, 1)) {
 		return false;
 	}
-	colors = mark[0];
+	colors = buf[0];
 	
 	if (!src->ReadI32LE(width) ||
 		!src->ReadI32LE(height) ||
@@ -97,11 +97,11 @@ int TVPLoadTLG5(void *callbackdata,
 			for(tjs_uint c = 0; c < colors; c++)
 			{
 				tjs_uint32 size;
-				if (!src->ReadBuffer(mark, 1) || !src->ReadI32LE(size)) {
+				if (!src->ReadBuffer(buf, 1) || !src->ReadI32LE(size)) {
 					ret = TLG_ERROR;
 					goto errend;
 				}
-				if(mark[0] == 0)
+				if(buf[0] == 0)
 				{
 					// modified LZSS compressed data
 					if (!src->ReadBuffer(inbuf, size)) {
