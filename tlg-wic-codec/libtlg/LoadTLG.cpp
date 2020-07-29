@@ -77,7 +77,7 @@ int TVPLoadTLG5(void *callbackdata,
 	tjs_uint8 *inbuf = NULL;
 	tjs_uint8 *outbuf[4];
 	tjs_uint8 *text = NULL;
-	tjs_int r = 0;
+	tjs_int slide_r = 0;
 	for(unsigned int i = 0; i < colors; i++) outbuf[i] = NULL;
 
 	int ret = TLG_SUCCESS;
@@ -108,7 +108,7 @@ int TVPLoadTLG5(void *callbackdata,
 						ret = TLG_ERROR;
 						goto errend;
 					}
-					r = TVPTLG5DecompressSlide(outbuf[c], inbuf, size, text, r);
+					slide_r = TVPTLG5DecompressSlide(outbuf[c], inbuf, size, text, slide_r);
 				}
 				else
 				{
