@@ -28,13 +28,13 @@ namespace tlgx
 
 		STDMETHOD( QueryCapability )( 
 			/* [in] */ IStream *pIStream,
-			/* [out] */ DWORD *pCapability );
+			/* [out] */ DWORD *pCapability ) override;
 
 		STDMETHOD( Initialize )( 
 			/* [in] */ IStream *pIStream,
-			/* [in] */ WICDecodeOptions cacheOptions );
+			/* [in] */ WICDecodeOptions cacheOptions ) override;
 
 	protected:
-		virtual BaseFrameDecode* CreateNewDecoderFrame( IWICImagingFactory *factory , UINT i );
+		BaseFrameDecode* CreateNewDecoderFrame( IWICImagingFactory *factory , UINT i ) override;
 	};
 }
