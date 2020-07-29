@@ -1,4 +1,4 @@
-#include "tlgdecoder.hpp"
+﻿#include "tlgdecoder.hpp"
 #include "../libtlg/tlg.h"
 
 #define __STR2WSTR(str) L##str
