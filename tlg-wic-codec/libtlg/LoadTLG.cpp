@@ -489,7 +489,7 @@ TVPCheckTLG(tTJSBinaryStream *src)
 	if (src->ReadBuffer(mark, 11)) {
 		// check for TLG0.0 sds
 		if(!memcmp("TLG0.0\x00sds\x1a\x00", mark, 11) ||
-		   !memcmp("TLG5.0\x00raw\x1a\x00", mark, 11) |\
+		   !memcmp("TLG5.0\x00raw\x1a\x00", mark, 11) ||
 		   !memcmp("TLG6.0\x00raw\x1a\x00", mark, 11)) {
 			ret = true;
 		}
