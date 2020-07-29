@@ -13,6 +13,13 @@ const GUID CLSID_TLG_Decoder =
 { 0x5103ad4, 0x28f3, 0x4229, { 0xa9, 0xa3, 0x29, 0x28, 0xa8, 0xce, 0x5e, 0x9a } };
 
 
+constexpr LARGE_INTEGER MakeLI(LONGLONG value) {
+	LARGE_INTEGER li{};
+	li.QuadPart = value;
+	return li;
+}
+
+
 /**
  * TLGLoader用
  */
@@ -194,14 +201,34 @@ namespace tlgx
 	// TODO: implement real query capability
 	STDMETHODIMP TLG_Decoder::QueryCapability( IStream *pIStream, DWORD *pCapability )
 	{
-		UNREFERENCED_PARAMETER( pIStream );
+		if (!pIStream || !pCapability) {
+			return E_INVALIDARG;
+		}
 
-		HRESULT result = S_OK;
+		{
+			// store stream seek position
+			ULARGE_INTEGER pos{};
+			if (const auto ret = pIStream->Seek({}, STREAM_SEEK_CUR, &pos); FAILED(ret)) {
+				return ret;
+			}
 
-		*pCapability =
-			WICBitmapDecoderCapabilityCanDecodeSomeImages;
+			tMyStream stream(pIStream);
+			const bool isTLG = TVPCheckTLG(&stream);
 
-		return result;
+			// restore stream seek position
+			if (const auto ret = pIStream->Seek(MakeLI(pos.QuadPart), STREAM_SEEK_SET, &pos); FAILED(ret)) {
+				return ret;
+			}
+
+			if (!isTLG) {
+				// WebP WIC codec does so
+				return WINCODEC_ERR_WRONGSTATE;
+			}
+		}
+
+		*pCapability = WICBitmapDecoderCapabilityCanDecodeSomeImages;
+
+		return S_OK;
 	}
 
 	STDMETHODIMP TLG_Decoder::Initialize( IStream *pIStream, WICDecodeOptions cacheOptions )
