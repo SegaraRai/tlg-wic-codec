@@ -46,7 +46,7 @@ int TVPLoadTLG5(void *callbackdata,
 
 {
 
-	unsigned char mark[12];
+	unsigned char mark[1];
 	tjs_uint32 width, height, colors, blockheight;
 	if (!src->ReadBuffer(mark, 1)) {
 		return false;
@@ -221,7 +221,7 @@ int TVPLoadTLG6(void *callbackdata,
 {
 	TVPCreateTable();
 
-	unsigned char buf[12];
+	unsigned char buf[4];
 
 	if (!src->ReadBuffer(buf, 4)) {
 		return TLG_ERROR;
@@ -457,17 +457,17 @@ static int TVPInternalLoadTLG(void *callbackdata, tTVPGraphicSizeCallback sizeca
 							  tTJSBinaryStream *src)
 {
 	// read header
-	unsigned char mark[12];
+	unsigned char mark[11];
 	if (!src->ReadBuffer(mark, 11)) {
 		return TLG_ERROR;
 	}
 
 	// check for TLG raw data
-	if(!memcmp("TLG5.0\x00raw\x1a\x00", mark, 11))
+	if(!memcmp("TLG5.0\x00raw\x1a", mark, 11))
 	{
 		return TVPLoadTLG5(callbackdata, sizecallback,	scanlinecallback, src);
 	}
-	else if(!memcmp("TLG6.0\x00raw\x1a\x00", mark, 11))
+	else if(!memcmp("TLG6.0\x00raw\x1a", mark, 11))
 	{
 		return TVPLoadTLG6(callbackdata, sizecallback, scanlinecallback, src);
 	}
@@ -485,12 +485,12 @@ TVPCheckTLG(tTJSBinaryStream *src)
 	src->Seek(0, TJS_BS_SEEK_SET); // rewind
 	bool ret = false;
 	// read header
-	unsigned char mark[12];
+	unsigned char mark[11];
 	if (src->ReadBuffer(mark, 11)) {
 		// check for TLG0.0 sds
-		if(!memcmp("TLG0.0\x00sds\x1a\x00", mark, 11) ||
-		   !memcmp("TLG5.0\x00raw\x1a\x00", mark, 11) ||
-		   !memcmp("TLG6.0\x00raw\x1a\x00", mark, 11)) {
+		if(!memcmp("TLG0.0\x00sds\x1a", mark, 11) ||
+		   !memcmp("TLG5.0\x00raw\x1a", mark, 11) ||
+		   !memcmp("TLG6.0\x00raw\x1a", mark, 11)) {
 			ret = true;
 		}
 	}
@@ -532,13 +532,13 @@ TVPLoadTLG(void *callbackdata,
 {
 	src->Seek(0, TJS_BS_SEEK_SET); // rewind
 	// read header
-	unsigned char mark[12];
+	unsigned char mark[11];
 	if (!src->ReadBuffer(mark, 11)) {
 		return TLG_ERROR;
 	}
 
 	// check for TLG0.0 sds
-	if(!memcmp("TLG0.0\x00sds\x1a\x00", mark, 11))
+	if(!memcmp("TLG0.0\x00sds\x1a", mark, 11))
 	{
 		// read TLG0.0 Structured Data Stream
 
