@@ -553,11 +553,6 @@ TVPLoadTLG(void *callbackdata,
 		if (!src->ReadI32LE(rawlen)) {
 			return TLG_ERROR;
 		}
-
-		// try to load TLG raw 
-		if (int ret = TVPInternalLoadTLG(callbackdata, sizecallback, scanlinecallback, src); ret != TLG_SUCCESS) {
-			return ret;
-		}
 		
 		// seek to meta info data point
 		src->Seek((tjs_uint64)rawlen + 11 + 4, TJS_BS_SEEK_SET);
@@ -643,7 +638,11 @@ TVPLoadTLG(void *callbackdata,
 			}
 		} // while
 
-		return TLG_SUCCESS;
+		// seek to TLG raw data point
+		src->Seek(11 + 4, TJS_BS_SEEK_SET);
+
+		// try to load TLG raw data
+		return TVPInternalLoadTLG(callbackdata, sizecallback, scanlinecallback, src);
 	}
 	else
 	{
