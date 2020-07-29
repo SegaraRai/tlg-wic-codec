@@ -274,7 +274,7 @@ namespace tlgx
 		regMan.SetSZ( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"Date", _STR2WSTR(__DATE__) );
 		regMan.SetSZ( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"SpecVersion", L"1.0.0.0" );
 		regMan.SetSZ( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"ColorManagementVersion", L"1.0.0.0" );
-		regMan.SetSZ( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"MimeTypes", L"x-image/tlg" );
+		regMan.SetSZ( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"MimeTypes", L"image/x-tlg" );
 		regMan.SetSZ( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"FileExtensions", L".tlg" );
 		regMan.SetDW( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"SupportsAnimation", 0 );
 		regMan.SetDW( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"SupportChromakey", 1 );
