@@ -6,8 +6,8 @@ namespace wicx
 	{
 		m_keys.push_back( keyName );
 		HKEY hKey;
-		long err = RegCreateKey( HKEY_CLASSES_ROOT, keyName, &hKey );
-		if ( err == ERROR_SUCCESS ) err = RegSetValueEx(hKey, valueName, 0, type, reinterpret_cast<BYTE const *>(value),
+		long err = RegCreateKeyW( HKEY_CLASSES_ROOT, keyName, &hKey );
+		if ( err == ERROR_SUCCESS ) err = RegSetValueExW(hKey, valueName, 0, type, reinterpret_cast<BYTE const *>(value),
 			static_cast<DWORD>(valueSize) );
 	}
 
@@ -15,7 +15,7 @@ namespace wicx
 	{
 		for ( unsigned i = 0; i < m_keys.size(); ++i )
 		{
-			RegDeleteKey( HKEY_CLASSES_ROOT, m_keys[i] );
+			RegDeleteKeyW( HKEY_CLASSES_ROOT, m_keys[i] );
 		}
 	}
 }
