@@ -262,7 +262,7 @@ namespace tlgx
 		regMan.SetSZ( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32", L"ThreadingModel", L"Apartment" );
 
 		// パターン登録
-		char *mask = "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff";
+		const char mask[] = "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff";
 		regMan.SetSZ( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns", L"", L"" );
 
 		regMan.SetDW( L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0", L"Position", 0 );

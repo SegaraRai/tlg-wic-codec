@@ -17,7 +17,7 @@ namespace wicx
 			SetRaw( keyName, valueName, REG_DWORD, &value, sizeof(value) );
 		}
 
-		void SetBytes( wchar_t const *keyName, wchar_t const *valueName, void *value, size_t count )
+		void SetBytes( wchar_t const *keyName, wchar_t const *valueName, void const *value, size_t count )
 		{
 			SetRaw( keyName, valueName, REG_BINARY, value, count );
 		}
