@@ -78,7 +78,7 @@ int TVPLoadTLG5(void *callbackdata,
 	tjs_uint8 *outbuf[4];
 	tjs_uint8 *text = NULL;
 	tjs_int r = 0;
-	for(int i = 0; i < colors; i++) outbuf[i] = NULL;
+	for(unsigned int i = 0; i < colors; i++) outbuf[i] = NULL;
 
 	int ret = TLG_SUCCESS;
 	
@@ -87,14 +87,14 @@ int TVPLoadTLG5(void *callbackdata,
 		memset(text, 0, 4096);
 
 		inbuf = (tjs_uint8*)TJSAlignedAlloc(blockheight * width + 10, 4);
-		for(tjs_int i = 0; i < colors; i++)
+		for(tjs_uint i = 0; i < colors; i++)
 			outbuf[i] = (tjs_uint8*)TJSAlignedAlloc(blockheight * width + 10, 4);
 
 		tjs_uint8 *prevline = NULL;
-		for(tjs_int y_blk = 0; y_blk < height; y_blk += blockheight)
+		for(tjs_uint y_blk = 0; y_blk < height; y_blk += blockheight)
 		{
 			// read file and decompress
-			for(tjs_int c = 0; c < colors; c++)
+			for(tjs_uint c = 0; c < colors; c++)
 			{
 				tjs_uint32 size;
 				if (!src->ReadBuffer(mark, 1) || !src->ReadI32LE(size)) {
@@ -121,11 +121,11 @@ int TVPLoadTLG5(void *callbackdata,
 			}
 
 			// compose colors and store
-			tjs_int y_lim = y_blk + blockheight;
+			tjs_uint y_lim = y_blk + blockheight;
 			if(y_lim > height) y_lim = height;
 			tjs_uint8 * outbufp[4];
-			for(tjs_int c = 0; c < colors; c++) outbufp[c] = outbuf[c];
-			for(tjs_int y = y_blk; y < y_lim; y++)
+			for(tjs_uint c = 0; c < colors; c++) outbufp[c] = outbuf[c];
+			for(tjs_uint y = y_blk; y < y_lim; y++)
 			{
 				tjs_uint8 *current = (tjs_uint8*)scanlinecallback(callbackdata, y);
 				if (current == NULL) {
@@ -156,12 +156,12 @@ int TVPLoadTLG5(void *callbackdata,
 					switch(colors)
 					{
 					case 3:
-						for(tjs_int pr = 0, pg = 0, pb = 0, x = 0;
+						for(tjs_uint pr = 0, pg = 0, pb = 0, x = 0;
 							x < width; x++)
 						{
-							tjs_int b = outbufp[0][x];
-							tjs_int g = outbufp[1][x];
-							tjs_int r = outbufp[2][x];
+							tjs_uint b = outbufp[0][x];
+							tjs_uint g = outbufp[1][x];
+							tjs_uint r = outbufp[2][x];
 							b += g; r += g;
 							0[current++] = pb += b;
 							0[current++] = pg += g;
@@ -173,13 +173,13 @@ int TVPLoadTLG5(void *callbackdata,
 						outbufp[2] += width;
 						break;
 					case 4:
-						for(tjs_int pr = 0, pg = 0, pb = 0, pa = 0, x = 0;
+						for(tjs_uint pr = 0, pg = 0, pb = 0, pa = 0, x = 0;
 							x < width; x++)
 						{
-							tjs_int b = outbufp[0][x];
-							tjs_int g = outbufp[1][x];
-							tjs_int r = outbufp[2][x];
-							tjs_int a = outbufp[3][x];
+							tjs_uint b = outbufp[0][x];
+							tjs_uint g = outbufp[1][x];
+							tjs_uint r = outbufp[2][x];
+							tjs_uint a = outbufp[3][x];
 							b += g; r += g;
 							0[current++] = pb += b;
 							0[current++] = pg += g;
@@ -203,7 +203,7 @@ int TVPLoadTLG5(void *callbackdata,
 errend:
 	if(inbuf) TJSAlignedDealloc(inbuf);
 	if(text) TJSAlignedDealloc(text);
-	for(tjs_int i = 0; i < colors; i++)
+	for(tjs_uint i = 0; i < colors; i++)
 		if(outbuf[i]) TJSAlignedDealloc(outbuf[i]);
 
 	return ret;
@@ -227,7 +227,7 @@ int TVPLoadTLG6(void *callbackdata,
 		return TLG_ERROR;
 	}
 
-	tjs_int colors = buf[0]; // color component count
+	tjs_uint colors = buf[0]; // color component count
 
 	if (colors != 1 && colors != 4 && colors != 3) {
 		// "Unsupported color count"
@@ -266,10 +266,10 @@ int TVPLoadTLG6(void *callbackdata,
 	}
 
 	// compute some values
-	tjs_int x_block_count = (tjs_int)((width - 1)/ TVP_TLG6_W_BLOCK_SIZE) + 1;
-	tjs_int y_block_count = (tjs_int)((height - 1)/ TVP_TLG6_H_BLOCK_SIZE) + 1;
-	tjs_int main_count = width / TVP_TLG6_W_BLOCK_SIZE;
-	tjs_int fraction = width -  main_count * TVP_TLG6_W_BLOCK_SIZE;
+	tjs_uint x_block_count = (tjs_uint)((width - 1) / TVP_TLG6_W_BLOCK_SIZE) + 1;
+	tjs_uint y_block_count = (tjs_uint)((height - 1) / TVP_TLG6_H_BLOCK_SIZE) + 1;
+	tjs_uint main_count = width / TVP_TLG6_W_BLOCK_SIZE;
+	tjs_uint fraction = width - main_count * TVP_TLG6_W_BLOCK_SIZE;
 
 	// prepare memory pointers
 	tjs_uint8 *bit_pool = NULL;
@@ -285,7 +285,7 @@ int TVPLoadTLG6(void *callbackdata,
 	pixelbuf     = (tjs_uint32 *)TJSAlignedAlloc(sizeof(tjs_uint32) * width * TVP_TLG6_H_BLOCK_SIZE + 1, 4);
 	filter_types = (tjs_uint8 *)TJSAlignedAlloc(x_block_count * y_block_count, 4);
 	zeroline     = (tjs_uint32 *)TJSAlignedAlloc(width * sizeof(tjs_uint32), 4);
-	LZSS_text    = (tjs_uint8*)TJSAlignedAlloc(4096, 4);
+	LZSS_text    = (tjs_uint8 *)TJSAlignedAlloc(4096, 4);
 
 	if (bit_pool == NULL ||
 		pixelbuf == NULL ||
@@ -329,15 +329,15 @@ int TVPLoadTLG6(void *callbackdata,
 
 		// for each horizontal block group ...
 		tjs_uint32 *prevline = zeroline;
-		for(tjs_int y = 0; y < height; y += TVP_TLG6_H_BLOCK_SIZE)
+		for(tjs_uint y = 0; y < height; y += TVP_TLG6_H_BLOCK_SIZE)
 		{
-			tjs_int ylim = y + TVP_TLG6_H_BLOCK_SIZE;
+			tjs_uint ylim = y + TVP_TLG6_H_BLOCK_SIZE;
 			if(ylim >= height) ylim = height;
 
-			tjs_int pixel_count = (ylim - y) * width;
+			tjs_uint pixel_count = (ylim - y) * width;
 
 			// decode values
-			for(tjs_int c = 0; c < colors; c++)
+			for(tjs_uint c = 0; c < colors; c++)
 			{
 				// read bit length
 				tjs_uint32 bit_length;
@@ -388,9 +388,9 @@ int TVPLoadTLG6(void *callbackdata,
 			// for each line
 			unsigned char * ft =
 				filter_types + (y / TVP_TLG6_H_BLOCK_SIZE)*x_block_count;
-			int skipbytes = (ylim-y)*TVP_TLG6_W_BLOCK_SIZE;
+			unsigned int skipbytes = (ylim-y)*TVP_TLG6_W_BLOCK_SIZE;
 
-			for(int yy = y; yy < ylim; yy++)
+			for(unsigned int yy = y; yy < ylim; yy++)
 			{
 				tjs_uint32* curline = (tjs_uint32*)scanlinecallback(callbackdata, yy);
 				if (curline == NULL) {
@@ -416,9 +416,9 @@ int TVPLoadTLG6(void *callbackdata,
 
 				if(main_count != x_block_count)
 				{
-					int ww = fraction;
+					unsigned int ww = fraction;
 					if(ww > TVP_TLG6_W_BLOCK_SIZE) ww = TVP_TLG6_W_BLOCK_SIZE;
-					int start = ww * (yy - y);
+					unsigned int start = ww * (yy - y);
 					TVPTLG6DecodeLineGeneric(
 						prevline,
 						curline,
