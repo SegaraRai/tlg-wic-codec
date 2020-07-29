@@ -183,12 +183,12 @@ namespace wicx
 	BaseDecoder::BaseDecoder( GUID Me, GUID Container )
 		: m_factory(NULL), m_palette(NULL), m_thumbnail(NULL), m_preview(NULL), m_CLSID_This(Me), m_CLSID_Container(Container)
 	{
-//		MessageBox( NULL, L"Decoder()", L"dds_wic_codec", MB_OK);
+//		MessageBoxW( NULL, L"Decoder()", L"dds_wic_codec", MB_OK);
 	}
 
 	BaseDecoder::~BaseDecoder()
 	{
-//		MessageBox( NULL, L"~Decoder()", L"dds_wic_codec", MB_OK);
+//		MessageBoxW( NULL, L"~Decoder()", L"dds_wic_codec", MB_OK);
 		ReleaseMembers( true );
 	}
 

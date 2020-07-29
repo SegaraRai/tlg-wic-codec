@@ -2,13 +2,16 @@
 #include "wicx/regman.hpp"
 #include "wicx/classfactory.hpp"
 #include "tlgx/tlgdecoder.hpp"
+#include "tlgx/tlgpropertystore.hpp"
 
 #include <shlobj.h>
 
 STDAPI DllRegisterServer()
 {    
 	wicx::RegMan regMan;
+
 	tlgx::TLG_Decoder::Register( regMan );
+	tlgx::TLG_PropertyStore::Register( regMan );
 
 	SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
 
@@ -18,7 +21,10 @@ STDAPI DllRegisterServer()
 STDAPI DllUnregisterServer()
 {    
 	wicx::RegMan regMan;
+
 	tlgx::TLG_Decoder::Register( regMan );
+	tlgx::TLG_PropertyStore::Register( regMan );
+
 	regMan.Unregister();
 
 	return S_OK;
@@ -36,6 +42,10 @@ STDAPI DllGetClassObject( REFCLSID rclsid, REFIID riid, void **ppv )
 		{
 			result = S_OK;
 			classFactory = new wicx::ClassFactory<tlgx::TLG_Decoder>();
+		}
+		else if (CLSID_TLG_PropertyStore == rclsid) {
+			result = S_OK;
+			classFactory = new wicx::ClassFactory<tlgx::TLG_PropertyStore>();
 		}
 		else
 			result = E_NOINTERFACE;
