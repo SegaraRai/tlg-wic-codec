@@ -554,9 +554,8 @@ TVPLoadTLG(void *callbackdata,
 			return TLG_ERROR;
 		}
 
-		// try to load TLG raw data
-		int ret;
-		if ((ret = TVPInternalLoadTLG(callbackdata, sizecallback, scanlinecallback, src))) {
+		// try to load TLG raw 
+		if (int ret = TVPInternalLoadTLG(callbackdata, sizecallback, scanlinecallback, src); ret != TLG_SUCCESS) {
 			return ret;
 		}
 		
@@ -644,7 +643,7 @@ TVPLoadTLG(void *callbackdata,
 			}
 		} // while
 
-		return ret;
+		return TLG_SUCCESS;
 	}
 	else
 	{
