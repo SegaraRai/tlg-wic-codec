@@ -1,0 +1,35 @@
+---
+BasedOnStyle: Mozilla
+
+IndentWidth: 2
+UseTab: Never
+ColumnLimit: 200
+
+---
+Language: Cpp
+
+BreakBeforeBraces: Attach
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: Empty
+AllowShortLoopsOnASingleLine: false
+
+BreakConstructorInitializers: AfterColon
+
+#IndentCaseBlocks: false
+IndentCaseLabels: true
+
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+
+AlignTrailingComments: false
+ReflowComments: false
+
+AlignEscapedNewlines: Left
+
+NamespaceIndentation: All
+FixNamespaceComments: true
+
+IndentPPDirectives: AfterHash
+---
