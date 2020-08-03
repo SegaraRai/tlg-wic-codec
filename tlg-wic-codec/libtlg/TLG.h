@@ -12,8 +12,8 @@
 #ifndef __TLG_H__
 #define __TLG_H__
 
-#include "tjs.h"
 #include "stream.h"
+#include "tjs.h"
 #include <string>
 #include <unordered_map>
 
@@ -26,7 +26,7 @@
 	call this once before TVPGraphicScanLineCallback.
 	return false can stop processing
 */
-typedef bool (*tTVPGraphicSizeCallback)(void *callbackdata, tjs_uint w, tjs_uint h);
+typedef bool (*tTVPGraphicSizeCallback)(void* callbackdata, tjs_uint w, tjs_uint h);
 
 /*
 	callback type to ask the scanline buffer for the decoded image, per a line.
@@ -36,16 +36,15 @@ typedef bool (*tTVPGraphicSizeCallback)(void *callbackdata, tjs_uint w, tjs_uint
 	was given by previous calling of TVPGraphicScanLineCallback. in this time,
 	this callback function must return NULL.
 */
-typedef void * (*tTVPGraphicScanLineCallback)(void *callbackdata, tjs_int y);
+typedef void* (*tTVPGraphicScanLineCallback)(void* callbackdata, tjs_int y);
 
 //---------------------------------------------------------------------------
 // return code
 //---------------------------------------------------------------------------
 
 #define TLG_SUCCESS (0)
-#define TLG_ABORT   (1)
-#define TLG_ERROR  (-1)
-
+#define TLG_ABORT (1)
+#define TLG_ERROR (-1)
 
 //---------------------------------------------------------------------------
 // functions
@@ -55,8 +54,7 @@ typedef void * (*tTVPGraphicScanLineCallback)(void *callbackdata, tjs_int y);
  * src 読み込み元ストリーム
  * TLG画像かどうかの判定
  */
-bool
-TVPCheckTLG(tTJSBinaryStream *src);
+bool TVPCheckTLG(tTJSBinaryStream* src);
 
 /**
  * TLG画像の情報を取得
@@ -64,8 +62,7 @@ TVPCheckTLG(tTJSBinaryStream *src);
  * @param width 横幅情報格納先
  * @parma height 縦幅情報格納先
  */
-extern bool
-TVPGetInfoTLG(tTJSBinaryStream *src, int *width, int *height);
+extern bool TVPGetInfoTLG(tTJSBinaryStream* src, int* width, int* height);
 
 /**
  * TLG画像のロード
@@ -76,12 +73,11 @@ TVPGetInfoTLG(tTJSBinaryStream *src, int *width, int *height);
  * @param tags 読み込んだタグ情報の格納先
  * @return 0:成功 1:中断 -1:エラー
  */
-extern int
-TVPLoadTLG(void *callbackdata,
-		   tTVPGraphicSizeCallback sizecallback,
-		   tTVPGraphicScanLineCallback scanlinecallback,
-		   std::unordered_map<std::string,std::string> *tags,
-		   tTJSBinaryStream *src);
+extern int TVPLoadTLG(void* callbackdata,
+                      tTVPGraphicSizeCallback sizecallback,
+                      tTVPGraphicScanLineCallback scanlinecallback,
+                      std::unordered_map<std::string, std::string>* tags,
+                      tTJSBinaryStream* src);
 
 /**
  * TLG画像のセーブ
@@ -95,12 +91,13 @@ TVPLoadTLG(void *callbackdata,
  * @param tags 保存するタグ情報
  * @return 0:成功 1:中断 -1:エラー
  */
-extern int
-TVPSaveTLG(tTJSBinaryStream *dest,
-		   int type,
-		   int width, int height, int colors,
-		   void *callbackdata,
-		   tTVPGraphicScanLineCallback scanlinecallback,
-		   const std::unordered_map<std::string,std::string> *tags);
+extern int TVPSaveTLG(tTJSBinaryStream* dest,
+                      int type,
+                      int width,
+                      int height,
+                      int colors,
+                      void* callbackdata,
+                      tTVPGraphicScanLineCallback scanlinecallback,
+                      const std::unordered_map<std::string, std::string>* tags);
 
 #endif

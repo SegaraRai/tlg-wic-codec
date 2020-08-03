@@ -1,6 +1,6 @@
 ﻿#include "tlgpropertystore.hpp"
-#include "tlgstream.hpp"
 #include "../libtlg/tlg.h"
+#include "tlgstream.hpp"
 
 #include <memory>
 #include <stdexcept>
@@ -12,135 +12,135 @@
 using namespace std::literals;
 
 // {509DC48F-345D-4506-9FE2-7BDF4AB21CE4}
-const GUID CLSID_TLG_PropertyStore = {0x509dc48f, 0x345d, 0x4506, {0x9f, 0xe2, 0x7b, 0xdf, 0x4a, 0xb2, 0x1c, 0xe4}};
+const GUID CLSID_TLG_PropertyStore = { 0x509dc48f, 0x345d, 0x4506, { 0x9f, 0xe2, 0x7b, 0xdf, 0x4a, 0xb2, 0x1c, 0xe4 } };
 
 // {318AE181-30CB-4080-998F-263114758B6E}
-const GUID PSGUID_TLGTAGS = {0x318ae181, 0x30cb, 0x4080, { 0x99, 0x8f, 0x26, 0x31, 0x14, 0x75, 0x8b, 0x6e }};
+const GUID PSGUID_TLGTAGS = { 0x318ae181, 0x30cb, 0x4080, { 0x99, 0x8f, 0x26, 0x31, 0x14, 0x75, 0x8b, 0x6e } };
 
-const PROPERTYKEY PKEY_TLG_Tags{PSGUID_TLGTAGS, PID_FIRST_USABLE};
-
+const PROPERTYKEY PKEY_TLG_Tags{ PSGUID_TLGTAGS, PID_FIRST_USABLE };
 
 constexpr LARGE_INTEGER MakeLI(LONGLONG value) {
-	LARGE_INTEGER li{};
-	li.QuadPart = value;
-	return li;
+  LARGE_INTEGER li{};
+  li.QuadPart = value;
+  return li;
 }
 
 std::wstring UTF8ToUTF16(const std::string& str) {
-	// for <  U+10000 : UTF-8 = 1 - 3 bytes, UTF-16 = 2 bytes (1 unit)
-	// for >= U+10000 : UTF-8 = 4     bytes, UTF-16 = 4 bytes (2 units)
+  // for <  U+10000 : UTF-8 = 1 - 3 bytes, UTF-16 = 2 bytes (1 unit)
+  // for >= U+10000 : UTF-8 = 4     bytes, UTF-16 = 4 bytes (2 units)
 
-	const auto bufferSize = static_cast<DWORD>(str.size() + 1);
-	auto buffer = std::make_unique<wchar_t[]>(bufferSize);
-	if (MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, str.c_str(), static_cast<DWORD>(str.size() + 1), buffer.get(), bufferSize) == 0) {
-		throw std::runtime_error("MultiByteToWideChar failed");
-	}
+  const auto bufferSize = static_cast<DWORD>(str.size() + 1);
+  auto buffer = std::make_unique<wchar_t[]>(bufferSize);
+  if (MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED, str.c_str(), static_cast<DWORD>(str.size() + 1), buffer.get(), bufferSize) == 0) {
+    throw std::runtime_error("MultiByteToWideChar failed");
+  }
 
-	return std::wstring(buffer.get());
+  return std::wstring(buffer.get());
 }
 
-
 namespace tlgx {
-	//----------------------------------------------------------------------------------------
-	// TLG_PropertyStore implementation
-	//----------------------------------------------------------------------------------------
-	
-	TLG_PropertyStore::TLG_PropertyStore() :
-		BasePropertyStore(CLSID_TLG_PropertyStore)
-	{}
+  //----------------------------------------------------------------------------------------
+  // TLG_PropertyStore implementation
+  //----------------------------------------------------------------------------------------
 
-	TLG_PropertyStore::~TLG_PropertyStore()
-	{}
+  TLG_PropertyStore::TLG_PropertyStore() : BasePropertyStore(CLSID_TLG_PropertyStore) {}
 
-	HRESULT TLG_PropertyStore::LoadProperties(IPropertyStoreCache* pPropertyCache, IStream* pStream) {
-		if (!pPropertyCache || !pStream) {
-			OutputDebugStringW(L"PropertyStore: invalid arg\n");
-			return E_INVALIDARG;
-		}
+  TLG_PropertyStore::~TLG_PropertyStore() {}
 
-		// store stream seek position
-		ULARGE_INTEGER pos{};
-		if (const auto ret = pStream->Seek({}, STREAM_SEEK_CUR, &pos); FAILED(ret)) {
-			OutputDebugStringW(L"PropertyStore: failed to Seek\n");
-			return ret;
-		}
+  HRESULT TLG_PropertyStore::LoadProperties(IPropertyStoreCache* pPropertyCache, IStream* pStream) {
+    if (!pPropertyCache || !pStream) {
+      OutputDebugStringW(L"PropertyStore: invalid arg\n");
+      return E_INVALIDARG;
+    }
 
-		tMyStream tjsStream(pStream);
+    // store stream seek position
+    ULARGE_INTEGER pos{};
+    if (const auto ret = pStream->Seek({}, STREAM_SEEK_CUR, &pos); FAILED(ret)) {
+      OutputDebugStringW(L"PropertyStore: failed to Seek\n");
+      return ret;
+    }
 
-		std::unordered_map<std::string, std::string> tagMap;
+    tMyStream tjsStream(pStream);
 
-		// load TLG tags
-		const auto result = TVPLoadTLG(pPropertyCache, [] (void* ptr, unsigned int width, unsigned int height) -> bool {
-			OutputDebugStringW(L"PropertyStore: callback\n");
+    std::unordered_map<std::string, std::string> tagMap;
 
-			auto pPropertyCache = static_cast<IPropertyStoreCache*>(ptr);
+    // load TLG tags
+    const auto result = TVPLoadTLG(
+      pPropertyCache,
+      [](void* ptr, unsigned int width, unsigned int height) -> bool {
+        OutputDebugStringW(L"PropertyStore: callback\n");
 
-			PROPVARIANT pv{};
+        auto pPropertyCache = static_cast<IPropertyStoreCache*>(ptr);
 
-			// set dimensions (w x h)
+        PROPVARIANT pv{};
 
-			if (SUCCEEDED(InitPropVariantFromUInt32(width, &pv))) {
-				pPropertyCache->SetValueAndState(PKEY_Image_HorizontalSize, &pv, PSC_NORMAL);
-				PropVariantClear(&pv);
-			}
+        // set dimensions (w x h)
 
-			// set width
-			if (SUCCEEDED(InitPropVariantFromUInt32(width, &pv))) {
-				pPropertyCache->SetValueAndState(PKEY_Image_HorizontalSize, &pv, PSC_NORMAL);
-				PropVariantClear(&pv);
-			}
+        if (SUCCEEDED(InitPropVariantFromUInt32(width, &pv))) {
+          pPropertyCache->SetValueAndState(PKEY_Image_HorizontalSize, &pv, PSC_NORMAL);
+          PropVariantClear(&pv);
+        }
 
-			// set height
-			if (SUCCEEDED(InitPropVariantFromUInt32(height, &pv))) {
-				pPropertyCache->SetValueAndState(PKEY_Image_VerticalSize, &pv, PSC_NORMAL);
-				PropVariantClear(&pv);
-			}
+        // set width
+        if (SUCCEEDED(InitPropVariantFromUInt32(width, &pv))) {
+          pPropertyCache->SetValueAndState(PKEY_Image_HorizontalSize, &pv, PSC_NORMAL);
+          PropVariantClear(&pv);
+        }
 
-			// set bit depth: 32bit
-			if (SUCCEEDED(InitPropVariantFromUInt32(32, &pv))) {
-				pPropertyCache->SetValueAndState(PKEY_Image_BitDepth, &pv, PSC_NORMAL);
-				PropVariantClear(&pv);
-			}
+        // set height
+        if (SUCCEEDED(InitPropVariantFromUInt32(height, &pv))) {
+          pPropertyCache->SetValueAndState(PKEY_Image_VerticalSize, &pv, PSC_NORMAL);
+          PropVariantClear(&pv);
+        }
 
-			// set image ID: "TLG" (unknown) / "TLG5.0 raw" / "TLG6.0 raw" / "TLG5.0 raw in TLG0.0 sds" / "TLG6.0 raw in TLG0.0 sds"
-			// TODO
-			const wchar_t* imageParsingName = L"TLG";
-			if (SUCCEEDED(InitPropVariantFromString(imageParsingName, &pv))) {
-				pPropertyCache->SetValueAndState(PKEY_Image_ImageID, &pv, PSC_NORMAL);
-				PropVariantClear(&pv);
-			}
+        // set bit depth: 32bit
+        if (SUCCEEDED(InitPropVariantFromUInt32(32, &pv))) {
+          pPropertyCache->SetValueAndState(PKEY_Image_BitDepth, &pv, PSC_NORMAL);
+          PropVariantClear(&pv);
+        }
 
-			// stop processing
-			return false;
-		}, nullptr, &tagMap, &tjsStream);
+        // set image ID: "TLG" (unknown) / "TLG5.0 raw" / "TLG6.0 raw" / "TLG5.0 raw in TLG0.0 sds" / "TLG6.0 raw in TLG0.0 sds"
+        // TODO
+        const wchar_t* imageParsingName = L"TLG";
+        if (SUCCEEDED(InitPropVariantFromString(imageParsingName, &pv))) {
+          pPropertyCache->SetValueAndState(PKEY_Image_ImageID, &pv, PSC_NORMAL);
+          PropVariantClear(&pv);
+        }
 
-		// restore stream seek position
-		if (const auto ret = pStream->Seek(MakeLI(pos.QuadPart), STREAM_SEEK_SET, &pos); FAILED(ret)) {
-			OutputDebugStringW(L"PropertyStore: seek failed 2\n");
-			return ret;
-		}
+        // stop processing
+        return false;
+      },
+      nullptr,
+      &tagMap,
+      &tjsStream);
 
-		if (result != TLG_ABORT) {
-			OutputDebugStringW(L"PropertyStore: result is not TLG_ABORT\n");
-			return E_UNEXPECTED;
-		}
+    // restore stream seek position
+    if (const auto ret = pStream->Seek(MakeLI(pos.QuadPart), STREAM_SEEK_SET, &pos); FAILED(ret)) {
+      OutputDebugStringW(L"PropertyStore: seek failed 2\n");
+      return ret;
+    }
 
-		// set System.Kind and System.KindText
-		{
-			PROPVARIANT pv{};
+    if (result != TLG_ABORT) {
+      OutputDebugStringW(L"PropertyStore: result is not TLG_ABORT\n");
+      return E_UNEXPECTED;
+    }
 
-			if (SUCCEEDED(InitPropVariantFromString(L"Picture", &pv))) {
-				pPropertyCache->SetValueAndState(PKEY_Kind, &pv, PSC_NORMAL);
-				PropVariantClear(&pv);
-			}
+    // set System.Kind and System.KindText
+    {
+      PROPVARIANT pv{};
 
-			if (SUCCEEDED(InitPropVariantFromString(L"TLG Image", &pv))) {
-				pPropertyCache->SetValueAndState(PKEY_KindText, &pv, PSC_NORMAL);
-				PropVariantClear(&pv);
-			}
-		}
+      if (SUCCEEDED(InitPropVariantFromString(L"Picture", &pv))) {
+        pPropertyCache->SetValueAndState(PKEY_Kind, &pv, PSC_NORMAL);
+        PropVariantClear(&pv);
+      }
 
-		/*
+      if (SUCCEEDED(InitPropVariantFromString(L"TLG Image", &pv))) {
+        pPropertyCache->SetValueAndState(PKEY_KindText, &pv, PSC_NORMAL);
+        PropVariantClear(&pv);
+      }
+    }
+
+    /*
 		// set tags
 		// commented out because the tags of some TLG files are jsut binary...
 		try {
@@ -201,26 +201,27 @@ namespace tlgx {
 		}
 		//*/
 
-		OutputDebugStringW(L"PropertyStore: OK\n");
+    OutputDebugStringW(L"PropertyStore: OK\n");
 
-		return S_OK;
-	}
+    return S_OK;
+  }
 
-	void TLG_PropertyStore::Register(RegMan& regMan) {
-		HMODULE curModule = GetModuleHandleW(L"tlg-wic-codec.dll");
-		wchar_t tempFileName[MAX_PATH];
-		if (curModule != NULL) GetModuleFileNameW(curModule, tempFileName, MAX_PATH);
+  void TLG_PropertyStore::Register(RegMan& regMan) {
+    HMODULE curModule = GetModuleHandleW(L"tlg-wic-codec.dll");
+    wchar_t tempFileName[MAX_PATH];
+    if (curModule != NULL)
+      GetModuleFileNameW(curModule, tempFileName, MAX_PATH);
 
-		// see https://docs.microsoft.com/ja-jp/windows/win32/properties/prophand-reg-dist
+    // see https://docs.microsoft.com/ja-jp/windows/win32/properties/prophand-reg-dist
 
-		regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Version", L"1.0.0.1");
-		regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Date", _STR2WSTR(__DATE__));
-		regMan.SetDW(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"ManualSafeSave", 1);
-		regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Author", L"Go Watanabe, SegaraRai");
-		regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Description", L"TLG(kirikiri) Property Handler");
-		regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"FriendlyName", L"TLG Property Handler");
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Version", L"1.0.0.1");
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Date", _STR2WSTR(__DATE__));
+    regMan.SetDW(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"ManualSafeSave", 1);
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Author", L"Go Watanabe, SegaraRai");
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Description", L"TLG(kirikiri) Property Handler");
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"FriendlyName", L"TLG Property Handler");
 
-		regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32", L"", tempFileName);
-		regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32", L"ThreadingModel", L"Apartment");
-	}
-}
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32", L"", tempFileName);
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32", L"ThreadingModel", L"Apartment");
+  }
+} // namespace tlgx

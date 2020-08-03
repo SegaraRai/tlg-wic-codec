@@ -3,87 +3,71 @@
 #include "../stdafx.hpp"
 #include "unknownimpl.hpp"
 
-namespace wicx
-{
-	template< typename T >
-	class ClassFactory: public IClassFactory
-	{
-	public:
-		// IUnknown interface
+namespace wicx {
+  template<typename T>
+  class ClassFactory : public IClassFactory {
+  public:
+    // IUnknown interface
 
-		STDMETHOD( QueryInterface )( REFIID riid, void **ppv )
-		{
-			HRESULT result = E_INVALIDARG;
+    STDMETHOD(QueryInterface)(REFIID riid, void** ppv) {
+      HRESULT result = E_INVALIDARG;
 
-			if ( ppv )
-			{
-				if (riid == IID_IUnknown)
-				{
-					*ppv = static_cast<IUnknown *>(this);
-					AddRef();
+      if (ppv) {
+        if (riid == IID_IUnknown) {
+          *ppv = static_cast<IUnknown*>(this);
+          AddRef();
 
-					result = S_OK;
-				}
-				else if (riid == IID_IClassFactory)
-				{
-					*ppv = static_cast<IClassFactory *>(this);
-					AddRef();
+          result = S_OK;
+        } else if (riid == IID_IClassFactory) {
+          *ppv = static_cast<IClassFactory*>(this);
+          AddRef();
 
-					result = S_OK;
-				}
-				else
-				{
-					result = E_NOINTERFACE;
-				}
-			}
+          result = S_OK;
+        } else {
+          result = E_NOINTERFACE;
+        }
+      }
 
-			return result;
-		}
+      return result;
+    }
 
-		STDMETHOD_( ULONG, AddRef )()
-		{
-			return unknownImpl.AddRef();
-		}
+    STDMETHOD_(ULONG, AddRef)() {
+      return unknownImpl.AddRef();
+    }
 
-		STDMETHOD_( ULONG, Release )()
-		{
-			ULONG result = unknownImpl.Release();
-			if ( 0 == result ) delete this;
-			return result;
-		}
+    STDMETHOD_(ULONG, Release)() {
+      ULONG result = unknownImpl.Release();
+      if (0 == result)
+        delete this;
+      return result;
+    }
 
-		// IClassFactory interface
+    // IClassFactory interface
 
-		STDMETHOD( CreateInstance )( IUnknown *pUnkOuter, REFIID riid, void **ppv )
-		{
-			UNREFERENCED_PARAMETER( pUnkOuter );
+    STDMETHOD(CreateInstance)(IUnknown* pUnkOuter, REFIID riid, void** ppv) {
+      UNREFERENCED_PARAMETER(pUnkOuter);
 
-			HRESULT result = E_INVALIDARG;
+      HRESULT result = E_INVALIDARG;
 
-			if (NULL != ppv)
-			{
-				T *obj = new T();
+      if (NULL != ppv) {
+        T* obj = new T();
 
-				if (NULL != obj)
-				{
-					result = obj->QueryInterface( riid, ppv );
-				}
-				else
-				{
-					*ppv = NULL;
-					result = E_OUTOFMEMORY;
-				}
-			}
+        if (NULL != obj) {
+          result = obj->QueryInterface(riid, ppv);
+        } else {
+          *ppv = NULL;
+          result = E_OUTOFMEMORY;
+        }
+      }
 
-			return result;
-		}
+      return result;
+    }
 
-		STDMETHOD( LockServer )( BOOL fLock )
-		{
-			return CoLockObjectExternal(this, fLock, FALSE);
-		}
+    STDMETHOD(LockServer)(BOOL fLock) {
+      return CoLockObjectExternal(this, fLock, FALSE);
+    }
 
-	private:
-		UnknownImpl unknownImpl;
-	};
-}
+  private:
+    UnknownImpl unknownImpl;
+  };
+} // namespace wicx

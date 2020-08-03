@@ -11,7 +11,7 @@ typedef __int32 tjs_int32;
 typedef unsigned __int32 tjs_uint32;
 typedef __int64 tjs_int64;
 typedef unsigned __int64 tjs_uint64;
-typedef int tjs_int;    /* at least 32bits */
-typedef unsigned int tjs_uint;    /* at least 32bits */
+typedef int tjs_int; /* at least 32bits */
+typedef unsigned int tjs_uint; /* at least 32bits */
 
 #endif

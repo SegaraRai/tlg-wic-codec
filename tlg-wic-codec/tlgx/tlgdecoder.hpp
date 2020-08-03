@@ -7,34 +7,33 @@
 extern const GUID CLSID_TLG_Container;
 extern const GUID CLSID_TLG_Decoder;
 
-namespace tlg
-{
-	struct TLG_HEADER;
+namespace tlg {
+  struct TLG_HEADER;
 }
 
-namespace tlgx
-{
-	using namespace wicx;
+namespace tlgx {
+  using namespace wicx;
 
-	class TLG_Decoder: public BaseDecoder
-	{
-	public:
-		static void Register( RegMan &regMan );
+  class TLG_Decoder : public BaseDecoder {
+  public:
+    static void Register(RegMan& regMan);
 
-		TLG_Decoder();
-		~TLG_Decoder();
+    TLG_Decoder();
+    ~TLG_Decoder();
 
-		// IWICBitmapDecoder interface
+    // IWICBitmapDecoder interface
 
-		STDMETHOD( QueryCapability )( 
-			/* [in] */ IStream *pIStream,
-			/* [out] */ DWORD *pCapability ) override;
+    STDMETHOD(QueryCapability)
+    (
+      /* [in] */ IStream* pIStream,
+      /* [out] */ DWORD* pCapability) override;
 
-		STDMETHOD( Initialize )( 
-			/* [in] */ IStream *pIStream,
-			/* [in] */ WICDecodeOptions cacheOptions ) override;
+    STDMETHOD(Initialize)
+    (
+      /* [in] */ IStream* pIStream,
+      /* [in] */ WICDecodeOptions cacheOptions) override;
 
-	protected:
-		BaseFrameDecode* CreateNewDecoderFrame( IWICImagingFactory *factory , UINT i ) override;
-	};
-}
+  protected:
+    BaseFrameDecode* CreateNewDecoderFrame(IWICImagingFactory* factory, UINT i) override;
+  };
+} // namespace tlgx
