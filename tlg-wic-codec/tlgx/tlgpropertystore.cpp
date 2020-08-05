@@ -78,26 +78,26 @@ namespace tlgx {
         {
           const std::wstring strDimensions = std::to_wstring(width) + L" x "s + std::to_wstring(height);
           if (SUCCEEDED(InitPropVariantFromString(strDimensions.c_str(), &pv))) {
-            pPropertyCache->SetValueAndState(PKEY_Image_Dimensions, &pv, PSC_NORMAL);
+            pPropertyCache->SetValueAndState(PKEY_Image_Dimensions, &pv, PSC_READONLY);
             PropVariantClear(&pv);
           }
         }
 
         // set width
         if (SUCCEEDED(InitPropVariantFromUInt32(width, &pv))) {
-          pPropertyCache->SetValueAndState(PKEY_Image_HorizontalSize, &pv, PSC_NORMAL);
+          pPropertyCache->SetValueAndState(PKEY_Image_HorizontalSize, &pv, PSC_READONLY);
           PropVariantClear(&pv);
         }
 
         // set height
         if (SUCCEEDED(InitPropVariantFromUInt32(height, &pv))) {
-          pPropertyCache->SetValueAndState(PKEY_Image_VerticalSize, &pv, PSC_NORMAL);
+          pPropertyCache->SetValueAndState(PKEY_Image_VerticalSize, &pv, PSC_READONLY);
           PropVariantClear(&pv);
         }
 
         // set bit depth: 32bit
         if (SUCCEEDED(InitPropVariantFromUInt32(32, &pv))) {
-          pPropertyCache->SetValueAndState(PKEY_Image_BitDepth, &pv, PSC_NORMAL);
+          pPropertyCache->SetValueAndState(PKEY_Image_BitDepth, &pv, PSC_READONLY);
           PropVariantClear(&pv);
         }
 
@@ -105,7 +105,7 @@ namespace tlgx {
         // TODO
         const wchar_t* imageParsingName = L"TLG";
         if (SUCCEEDED(InitPropVariantFromString(imageParsingName, &pv))) {
-          pPropertyCache->SetValueAndState(PKEY_Image_ImageID, &pv, PSC_NORMAL);
+          pPropertyCache->SetValueAndState(PKEY_Image_ImageID, &pv, PSC_READONLY);
           PropVariantClear(&pv);
         }
 
@@ -132,12 +132,12 @@ namespace tlgx {
       PROPVARIANT pv{};
 
       if (SUCCEEDED(InitPropVariantFromString(L"Picture", &pv))) {
-        pPropertyCache->SetValueAndState(PKEY_Kind, &pv, PSC_NORMAL);
+        pPropertyCache->SetValueAndState(PKEY_Kind, &pv, PSC_READONLY);
         PropVariantClear(&pv);
       }
 
       if (SUCCEEDED(InitPropVariantFromString(L"TLG Image", &pv))) {
-        pPropertyCache->SetValueAndState(PKEY_KindText, &pv, PSC_NORMAL);
+        pPropertyCache->SetValueAndState(PKEY_KindText, &pv, PSC_READONLY);
         PropVariantClear(&pv);
       }
     }
