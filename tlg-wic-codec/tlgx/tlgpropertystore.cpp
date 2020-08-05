@@ -75,10 +75,12 @@ namespace tlgx {
         PROPVARIANT pv{};
 
         // set dimensions (w x h)
-
-        if (SUCCEEDED(InitPropVariantFromUInt32(width, &pv))) {
-          pPropertyCache->SetValueAndState(PKEY_Image_HorizontalSize, &pv, PSC_NORMAL);
-          PropVariantClear(&pv);
+        {
+          const std::wstring strDimensions = std::to_wstring(width) + L" x "s + std::to_wstring(height);
+          if (SUCCEEDED(InitPropVariantFromString(strDimensions.c_str(), &pv))) {
+            pPropertyCache->SetValueAndState(PKEY_Image_Dimensions, &pv, PSC_NORMAL);
+            PropVariantClear(&pv);
+          }
         }
 
         // set width
