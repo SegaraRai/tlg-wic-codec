@@ -44,14 +44,12 @@ namespace tlgx {
 
   HRESULT TLG_PropertyStore::LoadProperties(IPropertyStoreCache* pPropertyCache, IStream* pStream) {
     if (!pPropertyCache || !pStream) {
-      OutputDebugStringW(L"PropertyStore: invalid arg\n");
       return E_INVALIDARG;
     }
 
     // store stream seek position
     ULARGE_INTEGER pos{};
     if (const auto ret = pStream->Seek({}, STREAM_SEEK_CUR, &pos); FAILED(ret)) {
-      OutputDebugStringW(L"PropertyStore: failed to Seek\n");
       return ret;
     }
 
@@ -63,8 +61,6 @@ namespace tlgx {
     const auto result = TVPLoadTLG(
       pPropertyCache,
       [](void* ptr, unsigned int width, unsigned int height) -> bool {
-        OutputDebugStringW(L"PropertyStore: callback\n");
-
         auto pPropertyCache = static_cast<IPropertyStoreCache*>(ptr);
 
         PROPVARIANT pv{};
@@ -115,12 +111,10 @@ namespace tlgx {
 
     // restore stream seek position
     if (const auto ret = pStream->Seek(wicx::MakeLI(pos.QuadPart), STREAM_SEEK_SET, &pos); FAILED(ret)) {
-      OutputDebugStringW(L"PropertyStore: seek failed 2\n");
       return ret;
     }
 
     if (result != TLG_ABORT) {
-      OutputDebugStringW(L"PropertyStore: result is not TLG_ABORT\n");
       return E_UNEXPECTED;
     }
 
@@ -199,8 +193,6 @@ namespace tlgx {
 			// do nothing
 		}
 		//*/
-
-    OutputDebugStringW(L"PropertyStore: OK\n");
 
     return S_OK;
   }

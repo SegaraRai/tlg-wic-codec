@@ -67,19 +67,16 @@ namespace wicx {
   STDMETHODIMP BasePropertyStore::Initialize(IStream* pstream, DWORD grfMode) {
     // return error if already initialized
     if (m_pPropertyCache) {
-      OutputDebugStringW(L"BasePropertyStore: already initialized\n");
       return HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED);
     }
 
     // check arg
     if (!pstream) {
-      OutputDebugStringW(L"BasePropertyStore: invalid arg\n");
       return E_INVALIDARG;
     }
 
     // return error if stream is write only
     if ((grfMode & 3) == STGM_WRITE) {
-      OutputDebugStringW(L"BasePropertyStore: invalid stream\n");
       return E_ACCESSDENIED;
     }
 
@@ -95,11 +92,8 @@ namespace wicx {
     const auto result = LoadProperties(m_pPropertyCache, pstream);
 
     if (FAILED(result)) {
-      OutputDebugStringW(L"BasePropertyStore: failed\n");
       ReleaseMembers();
     }
-
-    OutputDebugStringW(L"BasePropertyStore: OK\n");
 
     return result;
   }
@@ -107,8 +101,6 @@ namespace wicx {
   // ----- IPropertyStoreCapabilities interface ------------------------------------------------------------------
 
   STDMETHODIMP BasePropertyStore::IsPropertyWritable(REFPROPERTYKEY key) {
-    OutputDebugStringW(L"BasePropertyStore::IsPropertyWritable\n");
-
     UNREFERENCED_PARAMETER(key);
 
     if (!m_pPropertyCache) {
@@ -121,8 +113,6 @@ namespace wicx {
   // ----- IPropertyStore interface ------------------------------------------------------------------
 
   STDMETHODIMP BasePropertyStore::Commit() {
-    OutputDebugStringW(L"BasePropertyStore::Commit\n");
-
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
@@ -131,8 +121,6 @@ namespace wicx {
   }
 
   STDMETHODIMP BasePropertyStore::GetAt(DWORD iProp, PROPERTYKEY* pKey) {
-    OutputDebugStringW(L"BasePropertyStore::GetAt\n");
-
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
@@ -141,8 +129,6 @@ namespace wicx {
   }
 
   STDMETHODIMP BasePropertyStore::GetCount(DWORD* cProps) {
-    OutputDebugStringW(L"BasePropertyStore::GetCount\n");
-
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
@@ -151,16 +137,6 @@ namespace wicx {
   }
 
   STDMETHODIMP BasePropertyStore::GetValue(REFPROPERTYKEY key, PROPVARIANT* pv) {
-    OutputDebugStringW(L"BasePropertyStore::GetValue ");
-
-    PWSTR pstr = nullptr;
-    if (SUCCEEDED(PSGetNameFromPropertyKey(key, &pstr)) && pstr != nullptr) {
-      OutputDebugStringW(pstr);
-      CoTaskMemFree(pstr);
-      pstr = nullptr;
-    }
-    OutputDebugStringW(L"\n");
-
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
@@ -169,8 +145,6 @@ namespace wicx {
   }
 
   STDMETHODIMP BasePropertyStore::SetValue(REFPROPERTYKEY key, REFPROPVARIANT propvar) {
-    OutputDebugStringW(L"BasePropertyStore::SetValue\n");
-
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
