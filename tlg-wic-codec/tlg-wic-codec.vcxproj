@@ -201,6 +201,7 @@
     <ClCompile Include="wicx\BaseDecoder.cpp" />
     <ClCompile Include="wicx\BasePropertyStore.cpp" />
     <ClCompile Include="wicx\RegMan.cpp" />
+    <ClCompile Include="wicx\UnknownImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libtlg\slide.h" />

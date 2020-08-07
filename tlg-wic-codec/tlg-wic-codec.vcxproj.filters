@@ -42,6 +42,9 @@
     <ClCompile Include="wicx\RegMan.cpp">
       <Filter>wicx</Filter>
     </ClCompile>
+    <ClCompile Include="wicx\UnknownImpl.cpp">
+      <Filter>wicx</Filter>
+    </ClCompile>
     <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="tlg-wic-codec.cpp" />
   </ItemGroup>

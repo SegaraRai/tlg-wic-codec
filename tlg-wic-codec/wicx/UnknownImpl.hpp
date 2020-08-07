@@ -2,28 +2,17 @@
 
 #include "../StdAfx.hpp"
 
+#include <mutex>
+
 namespace wicx {
   class UnknownImpl {
+    std::mutex m_mutex;
+    ULONG m_numReferences = 0;
+
   public:
-    UnknownImpl() : m_numReferences(0) {}
+    UnknownImpl() = default;
 
-    ULONG STDMETHODCALLTYPE AddRef() {
-      return ++m_numReferences;
-    }
-
-    ULONG STDMETHODCALLTYPE Release() {
-      ULONG result;
-
-      if (m_numReferences > 0) {
-        --m_numReferences;
-        result = m_numReferences;
-      } else
-        result = m_numReferences = 0;
-
-      return result;
-    }
-
-  private:
-    int m_numReferences;
+    ULONG STDMETHODCALLTYPE AddRef();
+    ULONG STDMETHODCALLTYPE Release();
   };
 } // namespace wicx
