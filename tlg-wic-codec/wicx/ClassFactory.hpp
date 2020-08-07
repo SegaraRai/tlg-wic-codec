@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "../stdafx.hpp"
-#include "unknownimpl.hpp"
+#include "../StdAfx.hpp"
+#include "UnknownImpl.hpp"
 
 namespace wicx {
   template<typename T>

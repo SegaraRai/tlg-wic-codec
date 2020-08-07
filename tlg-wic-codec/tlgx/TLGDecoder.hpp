@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "../stdafx.hpp"
-#include "../wicx/basedecoder.hpp"
-#include "../wicx/regman.hpp"
+#include "../StdAfx.hpp"
+#include "../wicx/BaseDecoder.hpp"
+#include "../wicx/RegMan.hpp"
 
 extern const GUID CLSID_TLG_Container;
 extern const GUID CLSID_TLG_Decoder;

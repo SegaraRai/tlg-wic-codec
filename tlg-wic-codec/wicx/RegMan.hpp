@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../stdafx.hpp"
+#include "../StdAfx.hpp"
 
 namespace wicx {
   class RegMan {

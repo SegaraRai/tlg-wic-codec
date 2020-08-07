@@ -193,14 +193,14 @@
     <ClCompile Include="libtlg\slide.cpp" />
     <ClCompile Include="libtlg\stream.cpp" />
     <ClCompile Include="libtlg\tvpgl.c" />
-    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="tlg-wic-codec.cpp" />
-    <ClCompile Include="tlgx\tlgdecoder.cpp" />
-    <ClCompile Include="tlgx\tlgpropertystore.cpp" />
-    <ClCompile Include="tlgx\tlgstream.cpp" />
-    <ClCompile Include="wicx\basedecoder.cpp" />
-    <ClCompile Include="wicx\basepropertystore.cpp" />
-    <ClCompile Include="wicx\regman.cpp" />
+    <ClCompile Include="tlgx\TLGDecoder.cpp" />
+    <ClCompile Include="tlgx\TLGPropertystore.cpp" />
+    <ClCompile Include="tlgx\TLGStream.cpp" />
+    <ClCompile Include="wicx\BaseDecoder.cpp" />
+    <ClCompile Include="wicx\BasePropertyStore.cpp" />
+    <ClCompile Include="wicx\RegMan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libtlg\slide.h" />
@@ -208,15 +208,15 @@
     <ClInclude Include="libtlg\tjs.h" />
     <ClInclude Include="libtlg\TLG.h" />
     <ClInclude Include="libtlg\tvpgl.h" />
-    <ClInclude Include="stdafx.hpp" />
-    <ClInclude Include="tlgx\tlgdecoder.hpp" />
-    <ClInclude Include="tlgx\tlgpropertystore.hpp" />
-    <ClInclude Include="tlgx\tlgstream.hpp" />
-    <ClInclude Include="wicx\basedecoder.hpp" />
-    <ClInclude Include="wicx\basepropertystore.hpp" />
-    <ClInclude Include="wicx\classfactory.hpp" />
-    <ClInclude Include="wicx\regman.hpp" />
-    <ClInclude Include="wicx\unknownimpl.hpp" />
+    <ClInclude Include="StdAfx.hpp" />
+    <ClInclude Include="tlgx\TLGDecoder.hpp" />
+    <ClInclude Include="tlgx\TLGPropertyStore.hpp" />
+    <ClInclude Include="tlgx\TLGStream.hpp" />
+    <ClInclude Include="wicx\BaseDecoder.hpp" />
+    <ClInclude Include="wicx\BasePropertyStore.hpp" />
+    <ClInclude Include="wicx\ClassFactory.hpp" />
+    <ClInclude Include="wicx\RegMan.hpp" />
+    <ClInclude Include="wicx\UnknownImpl.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="tlg-wic-codec.def" />

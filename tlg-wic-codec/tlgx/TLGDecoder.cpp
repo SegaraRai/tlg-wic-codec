@@ -1,6 +1,6 @@
-﻿#include "tlgdecoder.hpp"
+﻿#include "TLGDecoder.hpp"
 #include "../libtlg/tlg.h"
-#include "tlgstream.hpp"
+#include "TLGStream.hpp"
 
 #define __STR2WSTR(str) L##str
 #define _STR2WSTR(str) __STR2WSTR(str)

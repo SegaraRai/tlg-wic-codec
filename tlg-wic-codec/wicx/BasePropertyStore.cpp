@@ -1,4 +1,4 @@
-﻿#include "basepropertystore.hpp"
+﻿#include "BasePropertyStore.hpp"
 
 #define WICX_RELEASE(X) \
   if (X != nullptr) {   \

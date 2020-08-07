@@ -1,4 +1,4 @@
-﻿#include "regman.hpp"
+﻿#include "RegMan.hpp"
 
 namespace wicx {
   void RegMan::SetRaw(wchar_t const* keyName, wchar_t const* valueName, unsigned type, void const* value, size_t valueSize) {

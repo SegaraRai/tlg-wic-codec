@@ -1,6 +1,6 @@
-﻿#include "tlgpropertystore.hpp"
+﻿#include "TLGPropertyStore.hpp"
 #include "../libtlg/tlg.h"
-#include "tlgstream.hpp"
+#include "TLGStream.hpp"
 
 #include <memory>
 #include <stdexcept>

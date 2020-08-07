@@ -1,4 +1,4 @@
-﻿#include "tlgstream.hpp"
+﻿#include "TLGStream.hpp"
 
 namespace tlgx {
   tMyStream::tMyStream(IStream* stream) : stream(stream) {

@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "../stdafx.hpp"
-#include "../wicx/basepropertystore.hpp"
-#include "../wicx/regman.hpp"
+#include "../StdAfx.hpp"
+#include "../wicx/BasePropertyStore.hpp"
+#include "../wicx/RegMan.hpp"
 
 extern const GUID CLSID_TLG_PropertyStore;
 

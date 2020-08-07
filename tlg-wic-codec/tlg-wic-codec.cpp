@@ -1,8 +1,8 @@
-﻿#include "stdafx.hpp"
-#include "tlgx/tlgdecoder.hpp"
-#include "tlgx/tlgpropertystore.hpp"
-#include "wicx/classfactory.hpp"
-#include "wicx/regman.hpp"
+﻿#include "StdAfx.hpp"
+#include "tlgx/TLGDecoder.hpp"
+#include "tlgx/TLGPropertyStore.hpp"
+#include "wicx/ClassFactory.hpp"
+#include "wicx/RegMan.hpp"
 
 #include <shlobj.h>
 

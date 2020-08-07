@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "../libtlg/TLG.h"
-#include "../stdafx.hpp"
+#include "../StdAfx.hpp"
 
 namespace tlgx {
   /**
