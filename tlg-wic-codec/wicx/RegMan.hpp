@@ -1,17 +1,20 @@
 ﻿#pragma once
 
-#include "../StdAfx.hpp"
+#include <deque>
+#include <string>
+
+#include <Windows.h>
 
 namespace wicx {
   class RegMan {
-    std::vector<wchar_t const*> m_keys;
+    std::deque<std::wstring> m_keys;
 
-    void SetRaw(wchar_t const* keyName, wchar_t const* valueName, unsigned type, void const* value, size_t valueSize);
+    void SetRaw(const std::wstring& keyName, const std::wstring& valueName, unsigned type, const void* value, size_t valueSize);
 
   public:
-    void SetSZ(wchar_t const* keyName, wchar_t const* valueName, LPCWSTR value);
-    void SetDW(wchar_t const* keyName, wchar_t const* valueName, DWORD value);
-    void SetBytes(wchar_t const* keyName, wchar_t const* valueName, void const* value, size_t count);
+    void SetSZ(const std::wstring& keyName, const std::wstring& valueName, const std::wstring& value);
+    void SetDW(const std::wstring& keyName, const std::wstring& valueName, DWORD value);
+    void SetBytes(const std::wstring& keyName, const std::wstring& valueName, const void* value, size_t count);
 
     void Unregister();
   };
