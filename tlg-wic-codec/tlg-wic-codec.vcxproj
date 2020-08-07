@@ -196,7 +196,7 @@
     <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="tlg-wic-codec.cpp" />
     <ClCompile Include="tlgx\TLGDecoder.cpp" />
-    <ClCompile Include="tlgx\TLGPropertystore.cpp" />
+    <ClCompile Include="tlgx\TLGPropertyStore.cpp" />
     <ClCompile Include="tlgx\TLGStream.cpp" />
     <ClCompile Include="wicx\BaseDecoder.cpp" />
     <ClCompile Include="wicx\BasePropertyStore.cpp" />

@@ -200,7 +200,6 @@ namespace tlgx {
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"CLSID", L"{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}");
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"FriendlyName", L"TLG Decoder");
 
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"", L"");
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"Version", L"1.0.0.1");
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"Date", _STR2WSTR(__DATE__));
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"SpecVersion", L"1.0.0.0");
@@ -216,7 +215,6 @@ namespace tlgx {
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"Description", L"TLG(kirikiri) Format Decoder");
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"FriendlyName", L"TLG Decoder");
 
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Formats", L"", L"");
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Formats\\{6FDDC324-4E03-4BFE-B185-3D77768DC90F}", L"", L"");
 
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32", L"", tempFileName);
@@ -224,7 +222,6 @@ namespace tlgx {
 
     // パターン登録
     const char mask[] = "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff";
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns", L"", L"");
 
     regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0", L"Position", 0);
     regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0", L"Length", 10);

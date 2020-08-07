@@ -218,7 +218,6 @@ namespace tlgx {
 
     // see https://docs.microsoft.com/ja-jp/windows/win32/properties/prophand-reg-dist
 
-    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"", L"");
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Version", L"1.0.0.1");
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Date", _STR2WSTR(__DATE__));
     regMan.SetDW(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"ManualSafeSave", 1);
