@@ -1,66 +1,67 @@
 ﻿#include "TLGStream.hpp"
 
+#include "../wicx/Util.hpp"
+
 namespace tlgx {
-  tMyStream::tMyStream(IStream* stream) : stream(stream) {
+  tCOMStream::tCOMStream(IStream* stream) : m_stream(stream) {
     stream->AddRef();
   }
 
-  tMyStream::~tMyStream() {
-    if (stream) {
-      stream->Release();
-      stream = 0;
-    }
+  tCOMStream::~tCOMStream() {
+    wicx::WICX_RELEASE(m_stream);
   }
 
-  tjs_uint64 tMyStream::Seek(tjs_int64 offset, tjs_int whence) {
-    if (stream) {
-      DWORD origin;
-      switch (whence) {
-        case TJS_BS_SEEK_SET:
-          origin = STREAM_SEEK_SET;
-          break;
-        case TJS_BS_SEEK_CUR:
-          origin = STREAM_SEEK_CUR;
-          break;
-        case TJS_BS_SEEK_END:
-          origin = STREAM_SEEK_END;
-          break;
-        default:
-          origin = STREAM_SEEK_SET;
-          break;
-      }
-
-      LARGE_INTEGER ofs;
-      ULARGE_INTEGER newpos;
-
-      ofs.QuadPart = offset;
-
-      if (SUCCEEDED(stream->Seek(ofs, origin, &newpos))) {
-        return newpos.QuadPart;
-      }
+  tjs_uint64 tCOMStream::Seek(tjs_int64 offset, tjs_int whence) {
+    if (!m_stream) {
+      return 0;
     }
-    return 0;
+
+    DWORD origin = STREAM_SEEK_SET;
+    switch (whence) {
+      case TJS_BS_SEEK_SET:
+        origin = STREAM_SEEK_SET;
+        break;
+
+      case TJS_BS_SEEK_CUR:
+        origin = STREAM_SEEK_CUR;
+        break;
+
+      case TJS_BS_SEEK_END:
+        origin = STREAM_SEEK_END;
+        break;
+    }
+
+    ULARGE_INTEGER newPos{};
+    if (FAILED(m_stream->Seek(wicx::MakeLI(offset), origin, &newPos))) {
+      return 0;
+    }
+
+    return newPos.QuadPart;
   }
 
-  tjs_uint tMyStream::Read(void* buffer, tjs_uint read_size) {
-    if (stream) {
-      ULONG cb = read_size;
-      ULONG read;
-      if (SUCCEEDED(stream->Read(buffer, cb, &read))) {
-        return read;
-      }
+  tjs_uint tCOMStream::Read(void* buffer, tjs_uint read_size) {
+    if (!m_stream) {
+      return 0;
     }
-    return 0;
+
+    ULONG read = 0;
+    if (FAILED(m_stream->Read(buffer, read_size, &read))) {
+      return 0;
+    }
+
+    return read;
   }
 
-  tjs_uint tMyStream::Write(const void* buffer, tjs_uint write_size) {
-    if (stream) {
-      ULONG cb = write_size;
-      ULONG written;
-      if (SUCCEEDED(stream->Write(buffer, cb, &written))) {
-        return written;
-      }
+  tjs_uint tCOMStream::Write(const void* buffer, tjs_uint write_size) {
+    if (!m_stream) {
+      return 0;
     }
-    return 0;
+
+    ULONG written = 0;
+    if (FAILED(m_stream->Write(buffer, write_size, &written))) {
+      return 0;
+    }
+
+    return written;
   }
 } // namespace tlgx

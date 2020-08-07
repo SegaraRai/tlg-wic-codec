@@ -1,18 +1,22 @@
 ﻿#pragma once
 
 #include "../libtlg/TLG.h"
-#include "../StdAfx.hpp"
+
+#include <Windows.h>
+
+#include <ObjIdl.h>
 
 namespace tlgx {
   /**
-	 * IStream -> tTJSBinaryStream
-	 */
-  class tMyStream : public tTJSBinaryStream {
-    IStream* stream;
+   * IStream -> tTJSBinaryStream
+   */
+  class tCOMStream : public tTJSBinaryStream {
+    IStream* m_stream;
 
   public:
-    tMyStream(IStream* stream);
-    ~tMyStream();
+    tCOMStream(IStream* stream);
+    ~tCOMStream();
+
     tjs_uint64 Seek(tjs_int64 offset, tjs_int whence) override;
     tjs_uint Read(void* buffer, tjs_uint read_size) override;
     tjs_uint Write(const void* buffer, tjs_uint write_size) override;

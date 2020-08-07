@@ -18,13 +18,7 @@ const GUID CLSID_TLG_PropertyStore = { 0x509dc48f, 0x345d, 0x4506, { 0x9f, 0xe2,
 // {318AE181-30CB-4080-998F-263114758B6E}
 const GUID PSGUID_TLGTAGS = { 0x318ae181, 0x30cb, 0x4080, { 0x99, 0x8f, 0x26, 0x31, 0x14, 0x75, 0x8b, 0x6e } };
 
-const PROPERTYKEY PKEY_TLG_Tags{ PSGUID_TLGTAGS, PID_FIRST_USABLE };
-
-constexpr LARGE_INTEGER MakeLI(LONGLONG value) {
-  LARGE_INTEGER li{};
-  li.QuadPart = value;
-  return li;
-}
+[[maybe_unused]] const PROPERTYKEY PKEY_TLG_Tags{ PSGUID_TLGTAGS, PID_FIRST_USABLE };
 
 std::wstring UTF8ToUTF16(const std::string& str) {
   // for <  U+10000 : UTF-8 = 1 - 3 bytes, UTF-16 = 2 bytes (1 unit)
@@ -61,7 +55,7 @@ namespace tlgx {
       return ret;
     }
 
-    tMyStream tjsStream(pStream);
+    tCOMStream tjsStream(pStream);
 
     std::unordered_map<std::string, std::string> tagMap;
 
@@ -211,7 +205,7 @@ namespace tlgx {
     return S_OK;
   }
 
-  void TLG_PropertyStore::Register(RegMan& regMan) {
+  void TLG_PropertyStore::Register(wicx::RegMan& regMan) {
     // see https://docs.microsoft.com/ja-jp/windows/win32/properties/prophand-reg-dist
 
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Version"s, L"1.0.0.1"s);
@@ -221,7 +215,7 @@ namespace tlgx {
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Description"s, L"TLG(kirikiri) Property Handler"s);
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"FriendlyName"s, L"TLG Property Handler"s);
 
-    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32"s, L""s, GetDLLFilepath());
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32"s, L""s, wicx::GetDLLFilepath());
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32"s, L"ThreadingModel"s, L"Apartment"s);
   }
 } // namespace tlgx

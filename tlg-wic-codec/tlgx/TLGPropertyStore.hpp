@@ -1,22 +1,24 @@
 ﻿#pragma once
 
-#include "../StdAfx.hpp"
 #include "../wicx/BasePropertyStore.hpp"
 #include "../wicx/RegMan.hpp"
+
+#include <Windows.h>
+
+#include <ObjIdl.h>
+#include <propsys.h>
 
 extern const GUID CLSID_TLG_PropertyStore;
 
 namespace tlgx {
-  using namespace wicx;
+  class TLG_PropertyStore : public wicx::BasePropertyStore {
+  protected:
+    HRESULT LoadProperties(IPropertyStoreCache* pPropertyCache, IStream* pStream) override;
 
-  class TLG_PropertyStore : public BasePropertyStore {
   public:
-    static void Register(RegMan& regMan);
+    static void Register(wicx::RegMan& regMan);
 
     TLG_PropertyStore();
     ~TLG_PropertyStore();
-
-  protected:
-    HRESULT LoadProperties(IPropertyStoreCache* pPropertyCache, IStream* pStream) override;
   };
 } // namespace tlgx

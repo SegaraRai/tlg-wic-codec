@@ -7,20 +7,21 @@
 
 #include <Windows.h>
 
+#include <ObjIdl.h>
+#include <wincodec.h>
+
 extern const GUID CLSID_TLG_Container;
 extern const GUID CLSID_TLG_Decoder;
 
 namespace tlgx {
-  using namespace wicx;
-
-  class TLG_Decoder : public BaseDecoder {
+  class TLG_Decoder : public wicx::BaseDecoder {
     std::mutex mutex;
 
   protected:
-    BaseFrameDecode* CreateNewDecoderFrame(IWICImagingFactory* factory, UINT i) override;
+    wicx::BaseFrameDecode* CreateNewDecoderFrame(IWICImagingFactory* factory, UINT i) override;
 
   public:
-    static void Register(RegMan& regMan);
+    static void Register(wicx::RegMan& regMan);
 
     TLG_Decoder();
     ~TLG_Decoder();

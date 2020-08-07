@@ -27,7 +27,7 @@ namespace tlgx {
   // TLG_FrameDecode implementation
   //----------------------------------------------------------------------------------------
 
-  class TLG_FrameDecode : public BaseFrameDecode {
+  class TLG_FrameDecode : public wicx::BaseFrameDecode {
     std::mutex mutex;
 
     int width = 0;
@@ -86,7 +86,7 @@ namespace tlgx {
       IWICImagingFactory* codecFactory = nullptr;
 
       if (const auto result = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, reinterpret_cast<LPVOID*>(&codecFactory)); FAILED(result)) {
-        WICX_RELEASE(codecFactory);
+        wicx::WICX_RELEASE(codecFactory);
         return result;
       }
 
@@ -97,11 +97,11 @@ namespace tlgx {
       IWICBitmap* ptrBitmap = nullptr;
 
       if (const auto result = codecFactory->CreateBitmapFromMemory(width, height, GUID_WICPixelFormat32bppBGRA, pitch, pitch * height, outData.get(), &ptrBitmap); FAILED(result)) {
-        WICX_RELEASE(codecFactory);
+        wicx::WICX_RELEASE(codecFactory);
         return result;
       }
 
-      WICX_RELEASE(codecFactory);
+      wicx::WICX_RELEASE(codecFactory);
 
       if (!ptrBitmap) {
         return E_FAIL;
@@ -115,7 +115,7 @@ namespace tlgx {
     HRESULT LoadImageFromStream(IStream* pIStream) {
       std::lock_guard lock(mutex);
 
-      tMyStream stream(pIStream);
+      tCOMStream stream(pIStream);
 
       if (const auto ret = TVPLoadTLG(this, sizeCallback, scanLineCallback, nullptr, &stream); ret != TLG_SUCCESS) {
         clear();
@@ -152,7 +152,7 @@ namespace tlgx {
 
       bool callbackCalled = false;
 
-      tMyStream stream(pIStream);
+      tCOMStream stream(pIStream);
 
       const auto result = TVPLoadTLG(
         &callbackCalled,
@@ -213,11 +213,11 @@ namespace tlgx {
     return S_OK;
   }
 
-  BaseFrameDecode* TLG_Decoder::CreateNewDecoderFrame(IWICImagingFactory* factory, UINT i) {
+  wicx::BaseFrameDecode* TLG_Decoder::CreateNewDecoderFrame(IWICImagingFactory* factory, UINT i) {
     return new TLG_FrameDecode(factory, i);
   }
 
-  void TLG_Decoder::Register(RegMan& regMan) {
+  void TLG_Decoder::Register(wicx::RegMan& regMan) {
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"CLSID"s, L"{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s);
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"FriendlyName"s, L"TLG Decoder"s);
 
@@ -239,7 +239,7 @@ namespace tlgx {
     regMan.Create(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Formats"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Formats\\{6FDDC324-4E03-4BFE-B185-3D77768DC90F}"s, L""s, L""s);
 
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32"s, L""s, GetDLLFilepath());
+    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32"s, L""s, wicx::GetDLLFilepath());
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32"s, L"ThreadingModel"s, L"Apartment"s);
 
     // パターン登録
