@@ -1,7 +1,14 @@
 ﻿#pragma once
 
-#include "../StdAfx.hpp"
 #include "UnknownImpl.hpp"
+
+#include <Windows.h>
+
+#include <guiddef.h>
+#include <ObjIdl.h>
+#include <PropIdl.h>
+#include <propsys.h>
+#include <wtypes.h>
 
 namespace wicx {
   class BasePropertyStore

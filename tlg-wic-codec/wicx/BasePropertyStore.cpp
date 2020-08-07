@@ -1,10 +1,6 @@
 ﻿#include "BasePropertyStore.hpp"
 
-#define WICX_RELEASE(X) \
-  if (X != nullptr) {   \
-    X->Release();       \
-    X = nullptr;        \
-  }
+#include "Util.hpp"
 
 namespace wicx {
   //----------------------------------------------------------------------------------------
@@ -12,11 +8,11 @@ namespace wicx {
   //----------------------------------------------------------------------------------------
 
   BasePropertyStore::BasePropertyStore(GUID Me) : m_pPropertyCache(nullptr), m_CLSID_This(Me) {
-    // MessageBoxW(NULL, L"PropertyStore()", L"dds_wic_codec", MB_OK);
+    // MessageBoxW(NULL, L"PropertyStore()", L"tlg_wic_codec", MB_OK);
   }
 
   BasePropertyStore::~BasePropertyStore() {
-    // MessageBoxW(NULL, L"~PropertyStore()", L"dds_wic_codec", MB_OK);
+    // MessageBoxW(NULL, L"~PropertyStore()", L"tlg_wic_codec", MB_OK);
     ReleaseMembers();
   }
 
@@ -28,12 +24,14 @@ namespace wicx {
 
   STDMETHODIMP BasePropertyStore::QueryInterface(REFIID iid, void** ppvObject) {
     if (!ppvObject) {
-      return S_OK;
+      return E_INVALIDARG;
     }
 
     *ppvObject = nullptr;
 
-    if (iid == IID_IUnknown || iid == IID_IPropertyStore) {
+    if (iid == IID_IUnknown) {
+      *ppvObject = static_cast<IUnknown*>(static_cast<IPropertyStore*>(this));
+    } else if (iid == IID_IPropertyStore) {
       *ppvObject = static_cast<IPropertyStore*>(this);
     } else if (iid == IID_IPropertyStoreCapabilities) {
       *ppvObject = static_cast<IPropertyStoreCapabilities*>(this);
@@ -150,8 +148,8 @@ namespace wicx {
     }
 
     /*
-		return m_propertyCache->SetValue(key, propvar);
-		/*/
+    return m_propertyCache->SetValue(key, propvar);
+    /*/
     UNREFERENCED_PARAMETER(key);
     UNREFERENCED_PARAMETER(propvar);
 
