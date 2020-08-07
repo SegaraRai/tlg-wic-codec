@@ -41,29 +41,29 @@ STDAPI DllUnregisterServer() {
 }
 
 STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void** ppv) {
-  HRESULT result = E_INVALIDARG;
-
-  if (NULL != ppv) {
-    IClassFactory* classFactory = NULL;
-
-    if (CLSID_TLG_Decoder == rclsid) {
-      result = S_OK;
-      classFactory = new wicx::ClassFactory<tlgx::TLG_Decoder>();
-    } else if (CLSID_TLG_PropertyStore == rclsid) {
-      result = S_OK;
-      classFactory = new wicx::ClassFactory<tlgx::TLG_PropertyStore>();
-    } else
-      result = E_NOINTERFACE;
-
-    if (SUCCEEDED(result)) {
-      if (NULL != classFactory)
-        result = classFactory->QueryInterface(riid, ppv);
-      else
-        result = E_OUTOFMEMORY;
-    }
+  if (!ppv) {
+    return E_INVALIDARG;
   }
 
-  return result;
+  IClassFactory* classFactory = nullptr;
+
+  try {
+    if (CLSID_TLG_Decoder == rclsid) {
+      classFactory = new wicx::ClassFactory<tlgx::TLG_Decoder>();
+    } else if (CLSID_TLG_PropertyStore == rclsid) {
+      classFactory = new wicx::ClassFactory<tlgx::TLG_PropertyStore>();
+    } else {
+      return E_NOINTERFACE;
+    }
+  } catch (std::bad_alloc&) {
+    // no memory
+    return E_OUTOFMEMORY;
+  } catch (...) {
+    // unknown error
+    return E_FAIL;
+  }
+
+  return classFactory->QueryInterface(riid, ppv);
 }
 
 BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {

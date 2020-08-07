@@ -1,9 +1,9 @@
-tlg-wic-codec
+## tlg-wic-codec
 =============
 
 KIRIKIRI TLG codecs for Windows Imaging Component
 
-○ライセンス
+## ライセンス
 
 WIC処理のオリジナルは MIT LICENSE の以下のコードです
 
@@ -13,7 +13,7 @@ http://code.google.com/p/dds-wic-codec
 libtlg/ は吉里吉里に由来します
 吉里吉里ライセンスに準拠します
 
-●インストール方法
+## インストール方法
 
 (1) ソースを取得してビルド
 
@@ -47,7 +47,7 @@ WIC対応のビューワアプリで TLG 画像が参照可能になります
 ![exproler](image/exproler.png)
 
 
-●アンインストール方法
+## アンインストール方法
 
 (1) サムネール指定削除
 
@@ -75,3 +75,20 @@ WIC対応のビューワアプリで TLG 画像が参照可能になります
 > regsvr32 /u Release-x64\tlg-wic-codec.dll 
 ```
 
+## ビルドに必要なもの
+
+ビルドに必要なものは以下の通りです
+
+- Visual Studio 2019
+  - Visual Studio Installerにて`C++によるデスクトップ開発`にチェックを入れた上で、
+    C++ Clang-clとC++ Clangコンパイラを追加しておくこと
+
+開発を行う場合は以下も用意してください
+
+- [LLVM](https://llvm.org/)
+  - コードフォーマットに使用
+  - PATHに追加しておく
+- Windows Sandbox
+  - 動作確認に使用
+- Windows Subsystem for Linux
+  - コードフォーマットと、動作確認に使用
