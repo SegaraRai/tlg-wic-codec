@@ -14,5 +14,14 @@ trim_trailing_whitespace = false
 [*.{c,cpp,h,hpp}]
 charset = utf-8-bom
 
-[*.{vcxproj,vcxproj.filters}]
+[*.{bat,cmd,reg}]
+charset = unset
+end_of_line = crlf
+
+[*.{sln,vcxproj,vcxproj.filters}]
 charset = utf-8-bom
+end_of_line = crlf
+
+[*.reg]
+charset = utf-16le
+end_of_line = crlf
