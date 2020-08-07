@@ -1,12 +1,12 @@
-#include "handlestream.h"
+ï»¿#include "handlestream.h"
 
 /**
- * ƒnƒ“ƒhƒ‹w’è‚ÅŠJ‚­
+ * ãƒãƒ³ãƒ‰ãƒ«æŒ‡å®šã§é–‹ã
  */
 tHandleStream::tHandleStream(HANDLE handle) : handle(handle), release(false) {}
 
 /**
- * ƒtƒ@ƒCƒ‹–¼w’è‚ÅŠJ‚­
+ * ãƒ•ã‚¡ã‚¤ãƒ«åæŒ‡å®šã§é–‹ã
  */
 tHandleStream::tHandleStream(const char* filename, DWORD mode) : release(true) {
   DWORD share = mode == GENERIC_READ ? FILE_SHARE_READ : 0;

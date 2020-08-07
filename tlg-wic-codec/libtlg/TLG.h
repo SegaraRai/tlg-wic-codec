@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+ï»¿//---------------------------------------------------------------------------
 /*
 	TVP2 ( T Visual Presenter 2 )  A script authoring tool
 	Copyright (C) 2000 W.Dee <dee@kikyou.info> and contributors
@@ -51,27 +51,27 @@ typedef void* (*tTVPGraphicScanLineCallback)(void* callbackdata, tjs_int y);
 //---------------------------------------------------------------------------
 
 /**
- * src “Ç‚İ‚İŒ³ƒXƒgƒŠ[ƒ€
- * TLG‰æ‘œ‚©‚Ç‚¤‚©‚Ì”»’è
+ * src èª­ã¿è¾¼ã¿å…ƒã‚¹ãƒˆãƒªãƒ¼ãƒ 
+ * TLGç”»åƒã‹ã©ã†ã‹ã®åˆ¤å®š
  */
 bool TVPCheckTLG(tTJSBinaryStream* src);
 
 /**
- * TLG‰æ‘œ‚Ìî•ñ‚ğæ“¾
- * @param src “Ç‚İ‚İŒ³ƒXƒgƒŠ[ƒ€
- * @param width ‰¡•î•ñŠi”[æ
- * @parma height c•î•ñŠi”[æ
+ * TLGç”»åƒã®æƒ…å ±ã‚’å–å¾—
+ * @param src èª­ã¿è¾¼ã¿å…ƒã‚¹ãƒˆãƒªãƒ¼ãƒ 
+ * @param width æ¨ªå¹…æƒ…å ±æ ¼ç´å…ˆ
+ * @parma height ç¸¦å¹…æƒ…å ±æ ¼ç´å…ˆ
  */
 extern bool TVPGetInfoTLG(tTJSBinaryStream* src, int* width, int* height);
 
 /**
- * TLG‰æ‘œ‚Ìƒ[ƒh
- * @param dest “Ç‚İ‚İŒ³ƒXƒgƒŠ[ƒ€
+ * TLGç”»åƒã®ãƒ­ãƒ¼ãƒ‰
+ * @param dest èª­ã¿è¾¼ã¿å…ƒã‚¹ãƒˆãƒªãƒ¼ãƒ 
  * @param callbackdata
- * @param sizecallback ƒTƒCƒYî•ñŠi”[—pƒR[ƒ‹ƒoƒbƒN
- * @param scanlinecallback ƒ[ƒhƒf[ƒ^Ši”[—pƒR[ƒ‹ƒoƒbƒN
- * @param tags “Ç‚İ‚ñ‚¾ƒ^ƒOî•ñ‚ÌŠi”[æ
- * @return 0:¬Œ÷ 1:’†’f -1:ƒGƒ‰[
+ * @param sizecallback ã‚µã‚¤ã‚ºæƒ…å ±æ ¼ç´ç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
+ * @param scanlinecallback ãƒ­ãƒ¼ãƒ‰ãƒ‡ãƒ¼ã‚¿æ ¼ç´ç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
+ * @param tags èª­ã¿è¾¼ã‚“ã ã‚¿ã‚°æƒ…å ±ã®æ ¼ç´å…ˆ
+ * @return 0:æˆåŠŸ 1:ä¸­æ–­ -1:ã‚¨ãƒ©ãƒ¼
  */
 extern int TVPLoadTLG(void* callbackdata,
                       tTVPGraphicSizeCallback sizecallback,
@@ -80,16 +80,16 @@ extern int TVPLoadTLG(void* callbackdata,
                       tTJSBinaryStream* src);
 
 /**
- * TLG‰æ‘œ‚ÌƒZ[ƒu
- * @param dest Ši”[æƒXƒgƒŠ[ƒ€
- * @param type í•Ê 0:TLG5 1:TLG6
- * @parma width ‰æ‘œ‰¡•
- * @param height ‰æ‘œc•
- * @param colors F”w’è 1:8bitƒOƒŒ[ 3:RGB 4:RGBA
- * @param callbackdata ƒR[ƒ‹ƒoƒbƒN—pƒf[ƒ^
- * @param scanlinecallback ƒZ[ƒuƒf[ƒ^’Ê’m—pƒR[ƒ‹ƒoƒbƒN(ƒf[ƒ^‚ª“ü‚Á‚Ä‚¢‚éƒAƒhƒŒƒX‚ğ“n‚·)
- * @param tags •Û‘¶‚·‚éƒ^ƒOî•ñ
- * @return 0:¬Œ÷ 1:’†’f -1:ƒGƒ‰[
+ * TLGç”»åƒã®ã‚»ãƒ¼ãƒ–
+ * @param dest æ ¼ç´å…ˆã‚¹ãƒˆãƒªãƒ¼ãƒ 
+ * @param type ç¨®åˆ¥ 0:TLG5 1:TLG6
+ * @parma width ç”»åƒæ¨ªå¹…
+ * @param height ç”»åƒç¸¦å¹…
+ * @param colors è‰²æ•°æŒ‡å®š 1:8bitã‚°ãƒ¬ãƒ¼ 3:RGB 4:RGBA
+ * @param callbackdata ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ç”¨ãƒ‡ãƒ¼ã‚¿
+ * @param scanlinecallback ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿é€šçŸ¥ç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯(ãƒ‡ãƒ¼ã‚¿ãŒå…¥ã£ã¦ã„ã‚‹ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’æ¸¡ã™)
+ * @param tags ä¿å­˜ã™ã‚‹ã‚¿ã‚°æƒ…å ±
+ * @return 0:æˆåŠŸ 1:ä¸­æ–­ -1:ã‚¨ãƒ©ãƒ¼
  */
 extern int TVPSaveTLG(tTJSBinaryStream* dest,
                       int type,

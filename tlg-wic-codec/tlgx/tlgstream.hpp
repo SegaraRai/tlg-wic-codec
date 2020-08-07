@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../libtlg/TLG.h"
 #include "../stdafx.hpp"

@@ -1,4 +1,4 @@
-#include "stream.h"
+﻿#include "stream.h"
 
 tjs_uint64 tTJSBinaryStream::GetPosition() {
   return Seek(0, TJS_BS_SEEK_CUR);

@@ -1,12 +1,12 @@
-#include "stream.h"
+ï»¿#include "stream.h"
 #include <windows.h>
 
 /**
- * Š®‘SƒIƒ“ƒƒ‚ƒŠ“®ì‚·‚éƒXƒgƒŠ[ƒ€
+ * å®Œå…¨ã‚ªãƒ³ãƒ¡ãƒ¢ãƒªå‹•ä½œã™ã‚‹ã‚¹ãƒˆãƒªãƒ¼ãƒ 
  */
 class tMemoryStream : public tTJSBinaryStream {
 public:
-  // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+  // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
   tMemoryStream() : hBuffer(0), stream(0) {
     hBuffer = ::GlobalAlloc(GMEM_MOVEABLE, 0);
     if (hBuffer) {
@@ -14,7 +14,7 @@ public:
     }
   }
 
-  // ƒfƒXƒgƒ‰ƒNƒ^
+  // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
   ~tMemoryStream() {
     if (stream) {
       stream->Release();

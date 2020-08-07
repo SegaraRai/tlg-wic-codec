@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+ï»¿//---------------------------------------------------------------------------
 
 #include "slide.h"
 #include "tlg.h"
@@ -6,13 +6,13 @@
 #define BLOCK_HEIGHT 4
 
 /**
- * TLG5‰æ‘œ‚Ì•Û‘¶
- * @param out o—Íæ
- * @param width ‰æ‘œ‰¡•
- * @param height ‰æ‘œc•
- * @param colors F”w’è 1/3/4
- * @param callback ƒR[ƒ‹ƒoƒbƒN—pƒpƒ‰ƒ[ƒ^
- * @param scanlinecallback sƒf[ƒ^‚ğ•Ô‚·ƒR[ƒ‹ƒoƒbƒNBNULL ‚ğ•Ô‚·‚Æ’†’f‚³‚ê‚éB1‚Â‘O‚É“n‚µ‚½ƒoƒbƒtƒ@‚Í—LŒø‚Å‚ ‚é•K—v‚ª‚ ‚é
+ * TLG5ç”»åƒã®ä¿å­˜
+ * @param out å‡ºåŠ›å…ˆ
+ * @param width ç”»åƒæ¨ªå¹…
+ * @param height ç”»åƒç¸¦å¹…
+ * @param colors è‰²æ•°æŒ‡å®š 1/3/4
+ * @param callback ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ç”¨ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+ * @param scanlinecallback è¡Œãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã€‚NULL ã‚’è¿”ã™ã¨ä¸­æ–­ã•ã‚Œã‚‹ã€‚1ã¤å‰ã«æ¸¡ã—ãŸãƒãƒƒãƒ•ã‚¡ã¯æœ‰åŠ¹ã§ã‚ã‚‹å¿…è¦ãŒã‚ã‚‹
  */
 int SaveTLG5(tTJSBinaryStream* out, int width, int height, int colors, void* callbackdata, tTVPGraphicScanLineCallback scanlinecallback) {
   int ret = TLG_SUCCESS;

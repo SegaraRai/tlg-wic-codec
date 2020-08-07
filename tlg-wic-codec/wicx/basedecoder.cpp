@@ -1,4 +1,4 @@
-#include "basedecoder.hpp"
+﻿#include "basedecoder.hpp"
 
 #define WICX_RELEASE(X) \
   if (NULL != X) {      \

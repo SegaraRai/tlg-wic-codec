@@ -1,4 +1,4 @@
-LIBRARY	"tlg-wic-codec"
+﻿LIBRARY	"tlg-wic-codec"
 
 EXPORTS
 	DllGetClassObject PRIVATE

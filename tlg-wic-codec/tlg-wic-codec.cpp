@@ -1,4 +1,4 @@
-#include "stdafx.hpp"
+﻿#include "stdafx.hpp"
 #include "tlgx/tlgdecoder.hpp"
 #include "tlgx/tlgpropertystore.hpp"
 #include "wicx/classfactory.hpp"

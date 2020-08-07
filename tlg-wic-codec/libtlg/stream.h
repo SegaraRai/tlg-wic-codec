@@ -1,4 +1,4 @@
-#ifndef __TLGSTREAM
+﻿#ifndef __TLGSTREAM
 #define __TLGSTREAM
 
 #include "tjs.h"

@@ -1,22 +1,22 @@
-#ifndef __handle_stream_h_
+ï»¿#ifndef __handle_stream_h_
 #define __handle_stream_h_
 
 #include "stream.h"
 #include <windows.h>
 
 /**
- * ƒnƒ“ƒhƒ‹/ƒtƒ@ƒCƒ‹”Å
+ * ãƒãƒ³ãƒ‰ãƒ«/ãƒ•ã‚¡ã‚¤ãƒ«ç‰ˆ
  */
 class tHandleStream : public tTJSBinaryStream {
 
 public:
   /**
-	 * ƒnƒ“ƒhƒ‹w’è‚ÅŠJ‚­(ƒnƒ“ƒhƒ‹‚Í‰ğ•ú‚³‚ê‚Ü‚¹‚ñ)
+	 * ãƒãƒ³ãƒ‰ãƒ«æŒ‡å®šã§é–‹ã(ãƒãƒ³ãƒ‰ãƒ«ã¯è§£æ”¾ã•ã‚Œã¾ã›ã‚“)
 	 */
   tHandleStream(HANDLE handle);
 
   /**
-	 * ƒtƒ@ƒCƒ‹–¼w’è‚ÅŠJ‚­
+	 * ãƒ•ã‚¡ã‚¤ãƒ«åæŒ‡å®šã§é–‹ã
 	 * @param mode
 	 */
   tHandleStream(const char* filename, DWORD mode = GENERIC_READ);

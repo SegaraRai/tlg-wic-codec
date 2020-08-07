@@ -1,4 +1,4 @@
-#include "TLG.h"
+﻿#include "TLG.h"
 #include <sstream>
 
 extern int SaveTLG5(tTJSBinaryStream* out, int width, int height, int colors, void* callback, tTVPGraphicScanLineCallback scanlinecallback);
