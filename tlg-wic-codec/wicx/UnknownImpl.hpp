@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "../StdAfx.hpp"
-
 #include <mutex>
+
+#include <Windows.h>
 
 namespace wicx {
   class UnknownImpl {

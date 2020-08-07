@@ -1,5 +1,9 @@
 ﻿#include "UnknownImpl.hpp"
 
+#include <mutex>
+
+#include <Windows.h>
+
 namespace wicx {
   ULONG STDMETHODCALLTYPE UnknownImpl::AddRef() {
     std::lock_guard lock(m_mutex);
