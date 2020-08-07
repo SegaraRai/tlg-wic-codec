@@ -66,8 +66,8 @@ namespace tlgx {
     }
 
     /**
-		 * データ転送
-		 */
+     * データ転送
+     */
     HRESULT fill() {
       HRESULT result = S_OK;
       IWICImagingFactory* codecFactory = NULL;
@@ -196,8 +196,11 @@ namespace tlgx {
     if (curModule != NULL)
       GetModuleFileNameW(curModule, tempFileName, MAX_PATH);
 
+    regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"", L"");
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"CLSID", L"{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}");
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"FriendlyName", L"TLG Decoder");
+
+    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"", L"");
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"Version", L"1.0.0.1");
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"Date", _STR2WSTR(__DATE__));
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}", L"SpecVersion", L"1.0.0.0");

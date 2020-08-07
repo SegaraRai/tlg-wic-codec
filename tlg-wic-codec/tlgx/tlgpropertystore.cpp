@@ -103,10 +103,12 @@ namespace tlgx {
 
         // set image ID: "TLG" (unknown) / "TLG5.0 raw" / "TLG6.0 raw" / "TLG5.0 raw in TLG0.0 sds" / "TLG6.0 raw in TLG0.0 sds"
         // TODO
-        const wchar_t* imageParsingName = L"TLG";
-        if (SUCCEEDED(InitPropVariantFromString(imageParsingName, &pv))) {
-          pPropertyCache->SetValueAndState(PKEY_Image_ImageID, &pv, PSC_READONLY);
-          PropVariantClear(&pv);
+        {
+          const wchar_t* imageID = L"TLG";
+          if (SUCCEEDED(InitPropVariantFromString(imageID, &pv))) {
+            pPropertyCache->SetValueAndState(PKEY_Image_ImageID, &pv, PSC_READONLY);
+            PropVariantClear(&pv);
+          }
         }
 
         // stop processing
@@ -216,6 +218,7 @@ namespace tlgx {
 
     // see https://docs.microsoft.com/ja-jp/windows/win32/properties/prophand-reg-dist
 
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"", L"");
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Version", L"1.0.0.1");
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"Date", _STR2WSTR(__DATE__));
     regMan.SetDW(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}", L"ManualSafeSave", 1);
