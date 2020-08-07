@@ -1,11 +1,21 @@
 ﻿#pragma once
 
 #include <deque>
+#include <stdexcept>
 #include <string>
 
 #include <Windows.h>
 
 namespace wicx {
+  class Win32Error : public std::runtime_error {
+    DWORD m_error;
+
+  public:
+    Win32Error(DWORD error);
+    
+    DWORD GetError() const;
+  };
+
   class RegMan {
   public:
     enum class Mode {

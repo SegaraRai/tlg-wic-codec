@@ -10,6 +10,16 @@
 using namespace std::literals;
 
 namespace wicx {
+  // Win32Error
+
+  Win32Error::Win32Error(DWORD error) : std::runtime_error("Win32 Error "s + std::to_string(error)), m_error(error) {}
+
+  DWORD Win32Error::GetError() const {
+    return m_error;
+  }
+
+  // RegMan
+
   RegMan::RegMan(RegMan::Mode mode) : m_mode(mode) {}
 
   void RegMan::Create(const std::wstring& keyName) {
@@ -34,14 +44,14 @@ namespace wicx {
         HKEY hKey = NULL;
 
         if (const auto result = RegCreateKeyExW(HKEY_CLASSES_ROOT, keyName.c_str(), 0, NULL, REG_OPTION_NON_VOLATILE, KEY_READ | KEY_WRITE, NULL, &hKey, NULL); result != ERROR_SUCCESS) {
-          throw std::runtime_error("RegCreateKeyExW failed");
+          throw Win32Error(static_cast<DWORD>(result));
         }
 
         // skip setting value if valueName == "" and type == REG_NONE
         // though this is not a correct use of REG_NONE, it won't be a practical problem
         if (!valueName.empty() || type != REG_NONE) {
           if (const auto result = RegSetValueExW(hKey, valueName.c_str(), 0, type, reinterpret_cast<BYTE const*>(value), static_cast<DWORD>(valueSize)); result != ERROR_SUCCESS) {
-            throw std::runtime_error("RegSetValueExW failed");
+            throw Win32Error(static_cast<DWORD>(result));
           }
         }
 
@@ -66,7 +76,7 @@ namespace wicx {
 
     for (const auto& key : m_keys) {
       if (const auto result = RegDeleteKeyExW(HKEY_CLASSES_ROOT, key.c_str(), 0, 0); result != ERROR_SUCCESS && result != ERROR_FILE_NOT_FOUND) {
-        throw std::runtime_error("RegDeleteKeyExW failed");
+        throw Win32Error(static_cast<DWORD>(result));
       }
     }
   }

@@ -12,6 +12,8 @@ STDAPI DllRegisterServer() {
 
     tlgx::TLG_Decoder::Register(regMan);
     tlgx::TLG_PropertyStore::Register(regMan);
+  } catch (wicx::Win32Error& error) {
+    return HRESULT_FROM_WIN32(error.GetError());
   } catch (...) {
     return E_FAIL;
   }
@@ -29,6 +31,8 @@ STDAPI DllUnregisterServer() {
     tlgx::TLG_PropertyStore::Register(regMan);
 
     regMan.Unregister();
+  } catch (wicx::Win32Error& error) {
+    return HRESULT_FROM_WIN32(error.GetError());
   } catch (...) {
     return E_FAIL;
   }
