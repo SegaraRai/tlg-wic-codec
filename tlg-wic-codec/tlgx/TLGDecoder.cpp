@@ -1,11 +1,12 @@
 ﻿#include "TLGDecoder.hpp"
-#include "../libtlg/tlg.h"
+
 #include "TLGStream.hpp"
 
-#include <string>
+#include "../libtlg/tlg.h"
 
-#define __STR2WSTR(str) L##str##s
-#define _STR2WSTR(str) __STR2WSTR(str)
+#include "../wicx/Util.hpp"
+
+#include <string>
 
 using namespace std::literals;
 
@@ -152,7 +153,7 @@ namespace tlgx {
         &stream);
 
       // restore stream seek position
-      if (const auto ret = pIStream->Seek(MakeLI(pos.QuadPart), STREAM_SEEK_SET, &pos); FAILED(ret)) {
+      if (const auto ret = pIStream->Seek(wicx::MakeLI(pos.QuadPart), STREAM_SEEK_SET, &pos); FAILED(ret)) {
         return ret;
       }
 
@@ -195,16 +196,11 @@ namespace tlgx {
   }
 
   void TLG_Decoder::Register(RegMan& regMan) {
-    HMODULE curModule = GetModuleHandleW(L"tlg-wic-codec.dll");
-    wchar_t tempFileName[MAX_PATH];
-    if (curModule != NULL)
-      GetModuleFileNameW(curModule, tempFileName, MAX_PATH);
-
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"CLSID"s, L"{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s);
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"FriendlyName"s, L"TLG Decoder"s);
 
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Version"s, L"1.0.0.1"s);
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Date"s, _STR2WSTR(__DATE__));
+    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Date"s, _STR2CPPWSTR(__DATE__));
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SpecVersion"s, L"1.0.0.0"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"ColorManagementVersion"s, L"1.0.0.0"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"MimeTypes"s, L"image/x-tlg"s);
@@ -221,7 +217,7 @@ namespace tlgx {
     regMan.Create(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Formats"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Formats\\{6FDDC324-4E03-4BFE-B185-3D77768DC90F}"s, L""s, L""s);
 
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32"s, L""s, tempFileName);
+    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32"s, L""s, GetDLLFilepath());
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32"s, L"ThreadingModel"s, L"Apartment"s);
 
     // パターン登録

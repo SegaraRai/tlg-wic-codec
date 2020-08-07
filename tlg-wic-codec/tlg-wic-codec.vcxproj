@@ -202,6 +202,7 @@
     <ClCompile Include="wicx\BasePropertyStore.cpp" />
     <ClCompile Include="wicx\RegMan.cpp" />
     <ClCompile Include="wicx\UnknownImpl.cpp" />
+    <ClCompile Include="wicx\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libtlg\slide.h" />
@@ -218,6 +219,7 @@
     <ClInclude Include="wicx\ClassFactory.hpp" />
     <ClInclude Include="wicx\RegMan.hpp" />
     <ClInclude Include="wicx\UnknownImpl.hpp" />
+    <ClInclude Include="wicx\Util.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="tlg-wic-codec.def" />

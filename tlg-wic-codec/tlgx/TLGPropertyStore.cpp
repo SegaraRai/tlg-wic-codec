@@ -1,13 +1,14 @@
 ﻿#include "TLGPropertyStore.hpp"
-#include "../libtlg/tlg.h"
+
 #include "TLGStream.hpp"
+
+#include "../libtlg/tlg.h"
+
+#include "../wicx/Util.hpp"
 
 #include <memory>
 #include <stdexcept>
 #include <string>
-
-#define __STR2WSTR(str) L##str
-#define _STR2WSTR(str) __STR2WSTR(str)
 
 using namespace std::literals;
 
@@ -119,7 +120,7 @@ namespace tlgx {
       &tjsStream);
 
     // restore stream seek position
-    if (const auto ret = pStream->Seek(MakeLI(pos.QuadPart), STREAM_SEEK_SET, &pos); FAILED(ret)) {
+    if (const auto ret = pStream->Seek(wicx::MakeLI(pos.QuadPart), STREAM_SEEK_SET, &pos); FAILED(ret)) {
       OutputDebugStringW(L"PropertyStore: seek failed 2\n");
       return ret;
     }
@@ -211,21 +212,16 @@ namespace tlgx {
   }
 
   void TLG_PropertyStore::Register(RegMan& regMan) {
-    HMODULE curModule = GetModuleHandleW(L"tlg-wic-codec.dll");
-    wchar_t tempFileName[MAX_PATH];
-    if (curModule != NULL)
-      GetModuleFileNameW(curModule, tempFileName, MAX_PATH);
-
     // see https://docs.microsoft.com/ja-jp/windows/win32/properties/prophand-reg-dist
 
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Version"s, L"1.0.0.1"s);
-    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Date"s, _STR2WSTR(__DATE__));
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Date"s, _STR2CPPWSTR(__DATE__));
     regMan.SetDW(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"ManualSafeSave"s, 1);
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Author"s, L"Go Watanabe, SegaraRai"s);
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Description"s, L"TLG(kirikiri) Property Handler"s);
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"FriendlyName"s, L"TLG Property Handler"s);
 
-    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32"s, L""s, tempFileName);
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32"s, L""s, GetDLLFilepath());
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32"s, L"ThreadingModel"s, L"Apartment"s);
   }
 } // namespace tlgx

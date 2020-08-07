@@ -6,6 +6,8 @@
 
 #include <shlobj.h>
 
+HINSTANCE g_hinstDLL = NULL;
+
 STDAPI DllRegisterServer() {
   try {
     wicx::RegMan regMan(wicx::RegMan::Mode::Register);
@@ -72,6 +74,7 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
   switch (fdwReason) {
     case DLL_PROCESS_ATTACH:
       DisableThreadLibraryCalls(hinstDLL);
+      g_hinstDLL = hinstDLL;
       break;
 
     case DLL_PROCESS_DETACH:

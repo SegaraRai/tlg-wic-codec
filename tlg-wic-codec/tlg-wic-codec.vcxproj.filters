@@ -45,6 +45,9 @@
     <ClCompile Include="wicx\UnknownImpl.cpp">
       <Filter>wicx</Filter>
     </ClCompile>
+    <ClCompile Include="wicx\Util.cpp">
+      <Filter>wicx</Filter>
+    </ClCompile>
     <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="tlg-wic-codec.cpp" />
   </ItemGroup>
@@ -76,6 +79,9 @@
     <ClInclude Include="wicx\BaseDecoder.hpp">
       <Filter>wicx</Filter>
     </ClInclude>
+    <ClInclude Include="wicx\BasePropertyStore.hpp">
+      <Filter>wicx</Filter>
+    </ClInclude>
     <ClInclude Include="wicx\ClassFactory.hpp">
       <Filter>wicx</Filter>
     </ClInclude>
@@ -85,7 +91,7 @@
     <ClInclude Include="wicx\UnknownImpl.hpp">
       <Filter>wicx</Filter>
     </ClInclude>
-    <ClInclude Include="wicx\BasePropertyStore.hpp">
+    <ClInclude Include="wicx\Util.hpp">
       <Filter>wicx</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.hpp" />
