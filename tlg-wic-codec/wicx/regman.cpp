@@ -1,4 +1,4 @@
-#include "regman.hpp"
+﻿#include "regman.hpp"
 
 namespace wicx {
   void RegMan::SetRaw(wchar_t const* keyName, wchar_t const* valueName, unsigned type, void const* value, size_t valueSize) {
@@ -10,8 +10,8 @@ namespace wicx {
   }
 
   void RegMan::Unregister() {
-    for (unsigned i = 0; i < m_keys.size(); ++i) {
-      RegDeleteKeyW(HKEY_CLASSES_ROOT, m_keys[i]);
+    for (std::size_t i = m_keys.size(); i > 0; i--) {
+      RegDeleteKeyW(HKEY_CLASSES_ROOT, m_keys[i - 1]);
     }
   }
 } // namespace wicx
