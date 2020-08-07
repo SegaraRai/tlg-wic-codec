@@ -7,10 +7,14 @@
 #include <shlobj.h>
 
 STDAPI DllRegisterServer() {
-  wicx::RegMan regMan;
+  try {
+    wicx::RegMan regMan(wicx::RegMan::Mode::Register);
 
-  tlgx::TLG_Decoder::Register(regMan);
-  tlgx::TLG_PropertyStore::Register(regMan);
+    tlgx::TLG_Decoder::Register(regMan);
+    tlgx::TLG_PropertyStore::Register(regMan);
+  } catch (...) {
+    return E_FAIL;
+  }
 
   SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
 
@@ -18,12 +22,16 @@ STDAPI DllRegisterServer() {
 }
 
 STDAPI DllUnregisterServer() {
-  wicx::RegMan regMan;
+  try {
+    wicx::RegMan regMan(wicx::RegMan::Mode::Unregister);
 
-  tlgx::TLG_Decoder::Register(regMan);
-  tlgx::TLG_PropertyStore::Register(regMan);
+    tlgx::TLG_Decoder::Register(regMan);
+    tlgx::TLG_PropertyStore::Register(regMan);
 
-  regMan.Unregister();
+    regMan.Unregister();
+  } catch (...) {
+    return E_FAIL;
+  }
 
   return S_OK;
 }

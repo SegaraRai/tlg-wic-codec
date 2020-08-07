@@ -7,15 +7,26 @@
 
 namespace wicx {
   class RegMan {
+  public:
+    enum class Mode {
+      Register,
+      Unregister,
+    };
+
+  private:
+    Mode m_mode;
     std::deque<std::wstring> m_keys;
 
-    void SetRaw(const std::wstring& keyName, const std::wstring& valueName, unsigned type, const void* value, size_t valueSize);
-
+    void SetRaw(const std::wstring& keyName, const std::wstring& valueName, DWORD type, const void* value, std::size_t valueSize);
+    
   public:
-    void SetSZ(const std::wstring& keyName, const std::wstring& valueName, const std::wstring& value);
-    void SetDW(const std::wstring& keyName, const std::wstring& valueName, DWORD value);
-    void SetBytes(const std::wstring& keyName, const std::wstring& valueName, const void* value, size_t count);
+    RegMan(Mode mode);
 
     void Unregister();
+
+    void Create(const std::wstring& keyName);
+    void SetSZ(const std::wstring& keyName, const std::wstring& valueName, const std::wstring& value);
+    void SetDW(const std::wstring& keyName, const std::wstring& valueName, DWORD value);
+    void SetBytes(const std::wstring& keyName, const std::wstring& valueName, const void* value, std::size_t count);
   };
 } // namespace wicx
