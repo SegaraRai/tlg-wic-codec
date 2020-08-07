@@ -6,7 +6,16 @@
 
 #include "../wicx/Util.hpp"
 
+#include <memory>
+#include <mutex>
 #include <string>
+
+#include <Windows.h>
+
+#include <guiddef.h>
+#include <objbase.h>
+#include <wincodec.h>
+#include <winerror.h>
 
 using namespace std::literals;
 

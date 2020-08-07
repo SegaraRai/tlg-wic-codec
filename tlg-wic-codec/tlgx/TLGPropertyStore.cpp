@@ -9,6 +9,18 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
+#include <vector>
+
+#include <Windows.h>
+
+#include <guiddef.h>
+#include <ObjIdl.h>
+#include <PropIdl.h>
+#include <propkey.h>
+#include <propsys.h>
+#include <propvarutil.h>
+#include <winerror.h>
 
 using namespace std::literals;
 
