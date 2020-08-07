@@ -1,20 +1,24 @@
 ﻿#pragma once
 
-#include "../StdAfx.hpp"
 #include "../wicx/BaseDecoder.hpp"
 #include "../wicx/RegMan.hpp"
 
+#include <mutex>
+
+#include <Windows.h>
+
 extern const GUID CLSID_TLG_Container;
 extern const GUID CLSID_TLG_Decoder;
-
-namespace tlg {
-  struct TLG_HEADER;
-}
 
 namespace tlgx {
   using namespace wicx;
 
   class TLG_Decoder : public BaseDecoder {
+    std::mutex mutex;
+
+  protected:
+    BaseFrameDecode* CreateNewDecoderFrame(IWICImagingFactory* factory, UINT i) override;
+
   public:
     static void Register(RegMan& regMan);
 
@@ -23,17 +27,7 @@ namespace tlgx {
 
     // IWICBitmapDecoder interface
 
-    STDMETHOD(QueryCapability)
-    (
-      /* [in] */ IStream* pIStream,
-      /* [out] */ DWORD* pCapability) override;
-
-    STDMETHOD(Initialize)
-    (
-      /* [in] */ IStream* pIStream,
-      /* [in] */ WICDecodeOptions cacheOptions) override;
-
-  protected:
-    BaseFrameDecode* CreateNewDecoderFrame(IWICImagingFactory* factory, UINT i) override;
+    STDMETHOD(QueryCapability)(IStream* pIStream, DWORD* pCapability) override;
+    STDMETHOD(Initialize)(IStream* pIStream, WICDecodeOptions cacheOptions) override;
   };
 } // namespace tlgx

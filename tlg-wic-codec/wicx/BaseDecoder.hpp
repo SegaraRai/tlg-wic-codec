@@ -151,7 +151,7 @@ namespace wicx {
 
     virtual BaseFrameDecode* CreateNewDecoderFrame(IWICImagingFactory* factory, UINT i) = 0;
     virtual void AddDecoderFrame(BaseFrameDecode* frame);
-    HRESULT VerifyFactory();
+    HRESULT EnsureFactory();
     void ReleaseMembers(bool releaseFactory);
 
   private:

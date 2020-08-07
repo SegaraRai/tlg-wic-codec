@@ -193,7 +193,7 @@ namespace wicx {
     WICX_RELEASE(m_preview);
   }
 
-  HRESULT BaseDecoder::VerifyFactory() {
+  HRESULT BaseDecoder::EnsureFactory() {
     if (NULL == m_factory)
       return CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, reinterpret_cast<LPVOID*>(&m_factory));
     else
@@ -259,7 +259,7 @@ namespace wicx {
     IWICComponentInfo* compInfo = NULL;
 
     if (SUCCEEDED(result))
-      result = VerifyFactory();
+      result = EnsureFactory();
 
     if (SUCCEEDED(result))
       result = m_factory->CreateComponentInfo(m_CLSID_This, &compInfo);

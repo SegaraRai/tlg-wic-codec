@@ -23,50 +23,59 @@ constexpr LARGE_INTEGER MakeLI(LONGLONG value) {
 }
 
 namespace tlgx {
-
   //----------------------------------------------------------------------------------------
   // TLG_FrameDecode implementation
   //----------------------------------------------------------------------------------------
 
   class TLG_FrameDecode : public BaseFrameDecode {
+    std::mutex mutex;
+
+    int width = 0;
+    int height = 0;
+    unsigned int pitch = 0;
+    std::unique_ptr<unsigned char[]> outData{};
+
   public:
-    TLG_FrameDecode(IWICImagingFactory* pIFactory, UINT num) : BaseFrameDecode(pIFactory, num), width(0), height(0), pitch(0), outData(0) {}
+    TLG_FrameDecode(IWICImagingFactory* pIFactory, UINT num) : BaseFrameDecode(pIFactory, num) {}
 
     ~TLG_FrameDecode() {}
 
     void clear() {
-      if (outData) {
-        delete[] outData;
-        outData = 0;
-      }
       width = 0;
       height = 0;
       pitch = 0;
+      outData.reset();
     }
 
     bool setSize(int w, int h) {
+      try {
+        clear();
+        width = w;
+        height = h;
+        pitch = (width * (32 / 8) + 3) & ~3; /*4byte境界*/
+        outData = std::make_unique<unsigned char[]>(pitch * height);
+        return true;
+      } catch (...) {}
+
       clear();
-      width = w;
-      height = h;
-      pitch = (width * (32 / 8) + 3) & ~3; /*4byte境界*/
-      outData = new unsigned char[pitch * height];
-      return outData != 0;
+
+      return false;
     }
 
     void* getScanLine(int y) {
-      if (y < 0 || outData == NULL) {
-        return NULL;
+      if (y < 0 || !outData) {
+        return nullptr;
       }
-      return outData + pitch * y;
+      return &outData[pitch * y];
     }
 
     static bool sizeCallback(void* callbackdata, unsigned int w, unsigned int h) {
-      TLG_FrameDecode* decoder = (TLG_FrameDecode*)callbackdata;
+      const auto decoder = static_cast<TLG_FrameDecode*>(callbackdata);
       return decoder->setSize(w, h);
     }
 
     static void* scanLineCallback(void* callbackdata, int y) {
-      TLG_FrameDecode* decoder = (TLG_FrameDecode*)callbackdata;
+      const auto decoder = static_cast<TLG_FrameDecode*>(callbackdata);
       return decoder->getScanLine(y);
     }
 
@@ -74,44 +83,51 @@ namespace tlgx {
      * データ転送
      */
     HRESULT fill() {
-      HRESULT result = S_OK;
-      IWICImagingFactory* codecFactory = NULL;
-      if (SUCCEEDED(result))
-        result = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, reinterpret_cast<LPVOID*>(&codecFactory));
-      if (SUCCEEDED(result))
-        result = codecFactory->CreateBitmapFromMemory(width, height, GUID_WICPixelFormat32bppBGRA, pitch, pitch * height, outData, reinterpret_cast<IWICBitmap**>(&(m_bitmapSource)));
-      if (codecFactory)
-        codecFactory->Release();
-      return result;
+      IWICImagingFactory* codecFactory = nullptr;
+
+      if (const auto result = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_IWICImagingFactory, reinterpret_cast<LPVOID*>(&codecFactory)); FAILED(result)) {
+        WICX_RELEASE(codecFactory);
+        return result;
+      }
+
+      if (!codecFactory) {
+        return E_FAIL;
+      }
+
+      IWICBitmap* ptrBitmap = nullptr;
+
+      if (const auto result = codecFactory->CreateBitmapFromMemory(width, height, GUID_WICPixelFormat32bppBGRA, pitch, pitch * height, outData.get(), &ptrBitmap); FAILED(result)) {
+        WICX_RELEASE(codecFactory);
+        return result;
+      }
+
+      WICX_RELEASE(codecFactory);
+
+      if (!ptrBitmap) {
+        return E_FAIL;
+      }
+
+      m_bitmapSource = static_cast<IWICBitmapSource*>(ptrBitmap);
+
+      return S_OK;
     }
 
     HRESULT LoadImageFromStream(IStream* pIStream) {
+      std::lock_guard lock(mutex);
+
       tMyStream stream(pIStream);
-      HRESULT result = S_OK;
-      int ret = TVPLoadTLG(this, sizeCallback, scanLineCallback, NULL, &stream);
-      switch (ret) {
-        case 0:
-          // 成功
-          result = fill();
-          break;
-        case 1:
-          // 中断された
-          result = E_FAIL;
-          break;
-        default:
-          // エラー
-          result = E_FAIL;
-          break;
+
+      if (const auto ret = TVPLoadTLG(this, sizeCallback, scanLineCallback, nullptr, &stream); ret != TLG_SUCCESS) {
+        clear();
+        return E_FAIL;
       }
+
+      const auto result = fill();
+
       clear();
+
       return result;
     }
-
-  private:
-    int width;
-    int height;
-    unsigned int pitch;
-    unsigned char* outData;
   };
 
   //----------------------------------------------------------------------------------------
@@ -169,26 +185,32 @@ namespace tlgx {
   }
 
   STDMETHODIMP TLG_Decoder::Initialize(IStream* pIStream, WICDecodeOptions cacheOptions) {
+    std::lock_guard lock(mutex);
+
     UNREFERENCED_PARAMETER(cacheOptions);
 
-    HRESULT result = E_INVALIDARG;
+    // TODO: return error if already initialized?
 
     ReleaseMembers(true);
 
-    if (pIStream) {
-      result = VerifyFactory();
-      if (SUCCEEDED(result)) {
-        TLG_FrameDecode* frame = (TLG_FrameDecode*)CreateNewDecoderFrame(m_factory, 0);
-        result = frame->LoadImageFromStream(pIStream);
-        if (SUCCEEDED(result))
-          AddDecoderFrame(frame);
-        else
-          delete frame;
-      }
-    } else
-      result = E_INVALIDARG;
+    if (!pIStream) {
+      return E_INVALIDARG;
+    }
 
-    return result;
+    if (const auto result = EnsureFactory(); FAILED(result)) {
+      return result;
+    }
+
+    const auto frame = static_cast<TLG_FrameDecode*>(CreateNewDecoderFrame(m_factory, 0));
+
+    if (const auto result = frame->LoadImageFromStream(pIStream); FAILED(result)) {
+      delete frame;
+      return result;
+    }
+
+    AddDecoderFrame(frame);
+
+    return S_OK;
   }
 
   BaseFrameDecode* TLG_Decoder::CreateNewDecoderFrame(IWICImagingFactory* factory, UINT i) {
