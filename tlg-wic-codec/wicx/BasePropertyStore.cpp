@@ -51,13 +51,11 @@ namespace wicx {
   }
 
   STDMETHODIMP_(ULONG) BasePropertyStore::Release() {
-    const ULONG result = m_unknownImpl.Release();
-
-    if (result == 0) {
+    const auto count = m_unknownImpl.Release();
+    if (count == 0) {
       delete this;
     }
-
-    return result;
+    return count;
   }
 
   // ----- IInitializeWithStream interface ------------------------------------------------------------------

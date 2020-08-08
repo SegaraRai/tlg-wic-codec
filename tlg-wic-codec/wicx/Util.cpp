@@ -1,5 +1,7 @@
 ﻿#include "Util.hpp"
 
+#include <mutex>
+#include <shared_mutex>
 #include <stdexcept>
 #include <string>
 
@@ -26,4 +28,40 @@ namespace wicx {
 
     return filepath;
   }
+
+#ifndef NDEBUG
+  void CheckMutex(std::mutex& mutex, const std::string& funcName) {
+    using namespace std::literals;
+
+    bool lockableExclusive = false;
+
+    if (mutex.try_lock()) {
+      lockableExclusive = true;
+      mutex.unlock();
+    }
+
+    const std::string str = funcName + ": x="s + (lockableExclusive ? "OK"s : "NG"s) + "\n"s;
+    OutputDebugStringA(str.c_str());
+  }
+  
+  void CheckMutex(std::shared_mutex& mutex, const std::string& funcName) {
+    using namespace std::literals;
+
+    bool lockableExclusive = false;
+    bool lockableShared = false;
+
+    if (mutex.try_lock_shared()) {
+      lockableShared = true;
+      mutex.unlock_shared();
+    }
+
+    if (mutex.try_lock()) {
+      lockableExclusive = true;
+      mutex.unlock();
+    }
+
+    const std::string str = funcName + ": x="s + (lockableExclusive ? "OK"s : "NG"s) + ", s="s + (lockableShared ? "OK"s : "NG"s) + "\n"s;
+    OutputDebugStringA(str.c_str());
+  }
+#endif
 } // namespace wicx

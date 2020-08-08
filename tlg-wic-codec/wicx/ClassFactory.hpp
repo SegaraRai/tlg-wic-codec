@@ -36,10 +36,11 @@ namespace wicx {
     }
 
     STDMETHOD_(ULONG, Release)() {
-      ULONG result = unknownImpl.Release();
-      if (0 == result)
+      const auto count = unknownImpl.Release();
+      if (count == 0) {
         delete this;
-      return result;
+      }
+      return count;
     }
 
     // IClassFactory interface

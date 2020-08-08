@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <mutex>
+#include <shared_mutex>
 #include <string>
 
 #include <Windows.h>
@@ -21,6 +23,13 @@ namespace wicx {
     li.QuadPart = value;
     return li;
   }
+
+#ifdef NDEBUG
+#  define CheckMutex(...) /**/
+#else
+  void CheckMutex(std::mutex& mutex, const std::string& funcName);
+  void CheckMutex(std::shared_mutex& mutex, const std::string& funcName);
+#endif
 
   std::wstring GetDLLFilepath();
 } // namespace wicx
