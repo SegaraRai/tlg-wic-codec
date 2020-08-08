@@ -12,7 +12,7 @@
 namespace wicx {
   class BaseFrameDecode : public IWICBitmapFrameDecode {
     std::shared_mutex m_mutex;
-    UnknownImpl m_unknownImpl{};
+    UnknownImpl m_unknownImpl;
 
     void ReleaseMembers();
 
@@ -52,7 +52,7 @@ namespace wicx {
 
   class BaseDecoder : public IWICBitmapDecoder {
     std::shared_mutex m_mutex;
-    UnknownImpl m_unknownImpl{};
+    UnknownImpl m_unknownImpl;
 
   protected:
     GUID const m_CLSID_Container{};

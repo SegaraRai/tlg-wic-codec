@@ -6,29 +6,27 @@
 namespace wicx {
   template<typename T>
   class ClassFactory : public IClassFactory {
+    UnknownImpl unknownImpl;
+
   public:
     // IUnknown interface
 
     STDMETHOD(QueryInterface)(REFIID riid, void** ppv) {
-      HRESULT result = E_INVALIDARG;
-
-      if (ppv) {
-        if (riid == IID_IUnknown) {
-          *ppv = static_cast<IUnknown*>(this);
-          AddRef();
-
-          result = S_OK;
-        } else if (riid == IID_IClassFactory) {
-          *ppv = static_cast<IClassFactory*>(this);
-          AddRef();
-
-          result = S_OK;
-        } else {
-          result = E_NOINTERFACE;
-        }
+      if (!ppv) {
+        return E_INVALIDARG;
       }
 
-      return result;
+      if (riid == IID_IUnknown) {
+        *ppv = static_cast<IUnknown*>(this);
+      } else if (riid == IID_IClassFactory) {
+        *ppv = static_cast<IClassFactory*>(this);
+      } else {
+        return E_NOINTERFACE;
+      }
+
+      AddRef();
+
+      return S_OK;
     }
 
     STDMETHOD_(ULONG, AddRef)() {
@@ -48,27 +46,24 @@ namespace wicx {
     STDMETHOD(CreateInstance)(IUnknown* pUnkOuter, REFIID riid, void** ppv) {
       UNREFERENCED_PARAMETER(pUnkOuter);
 
-      HRESULT result = E_INVALIDARG;
-
-      if (NULL != ppv) {
-        T* obj = new T();
-
-        if (NULL != obj) {
-          result = obj->QueryInterface(riid, ppv);
-        } else {
-          *ppv = NULL;
-          result = E_OUTOFMEMORY;
-        }
+      if (!ppv) {
+        return E_INVALIDARG;
       }
 
-      return result;
+      try {
+        T* obj = new T();
+        return obj->QueryInterface(riid, ppv);
+      } catch (std::bad_alloc&) {
+        // no memory
+        return E_OUTOFMEMORY;
+      } catch (...) {
+        // unknown exception
+        return E_FAIL;
+      }
     }
 
     STDMETHOD(LockServer)(BOOL fLock) {
       return CoLockObjectExternal(this, fLock, FALSE);
     }
-
-  private:
-    UnknownImpl unknownImpl;
   };
 } // namespace wicx
