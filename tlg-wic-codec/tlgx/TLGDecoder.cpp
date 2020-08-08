@@ -25,12 +25,6 @@ const GUID CLSID_TLG_Container = { 0x280bf6ec, 0xa7b, 0x4870, { 0x8a, 0xb0, 0xfc
 // {05103AD4-28F3-4229-A9A3-2928A8CE5E9A}
 const GUID CLSID_TLG_Decoder = { 0x5103ad4, 0x28f3, 0x4229, { 0xa9, 0xa3, 0x29, 0x28, 0xa8, 0xce, 0x5e, 0x9a } };
 
-constexpr LARGE_INTEGER MakeLI(LONGLONG value) {
-  LARGE_INTEGER li{};
-  li.QuadPart = value;
-  return li;
-}
-
 namespace tlgx {
   //----------------------------------------------------------------------------------------
   // TLG_FrameDecode implementation

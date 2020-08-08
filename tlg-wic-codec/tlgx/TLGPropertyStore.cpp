@@ -77,13 +77,16 @@ namespace tlgx {
 
         PROPVARIANT pv{};
 
-        // set dimensions (w x h)
-        {
+        // set dimensions ("<width> x <height>")
+        try {
           const std::wstring strDimensions = std::to_wstring(width) + L" x "s + std::to_wstring(height);
           if (SUCCEEDED(InitPropVariantFromString(strDimensions.c_str(), &pv))) {
             pPropertyCache->SetValueAndState(PKEY_Image_Dimensions, &pv, PSC_READONLY);
             PropVariantClear(&pv);
           }
+        } catch (...) {
+          // typically memory error
+          // do nothing
         }
 
         // set width
@@ -114,7 +117,7 @@ namespace tlgx {
           }
         }
 
-        // stop processing
+        // abort processing
         return false;
       },
       nullptr,
