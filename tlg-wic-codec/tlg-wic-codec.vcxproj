@@ -193,7 +193,6 @@
     <ClCompile Include="libtlg\slide.cpp" />
     <ClCompile Include="libtlg\stream.cpp" />
     <ClCompile Include="libtlg\tvpgl.c" />
-    <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="tlg-wic-codec.cpp" />
     <ClCompile Include="tlgx\TLGDecoder.cpp" />
     <ClCompile Include="tlgx\TLGPropertyStore.cpp" />
@@ -210,7 +209,6 @@
     <ClInclude Include="libtlg\tjs.h" />
     <ClInclude Include="libtlg\TLG.h" />
     <ClInclude Include="libtlg\tvpgl.h" />
-    <ClInclude Include="StdAfx.hpp" />
     <ClInclude Include="tlgx\TLGDecoder.hpp" />
     <ClInclude Include="tlgx\TLGPropertyStore.hpp" />
     <ClInclude Include="tlgx\TLGStream.hpp" />

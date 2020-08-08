@@ -48,7 +48,6 @@
     <ClCompile Include="wicx\Util.cpp">
       <Filter>wicx</Filter>
     </ClCompile>
-    <ClCompile Include="StdAfx.cpp" />
     <ClCompile Include="tlg-wic-codec.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +93,6 @@
     <ClInclude Include="wicx\Util.hpp">
       <Filter>wicx</Filter>
     </ClInclude>
-    <ClInclude Include="StdAfx.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="tlg-wic-codec.def" />

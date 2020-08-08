@@ -1,7 +1,14 @@
 ﻿#pragma once
 
-#include "../StdAfx.hpp"
 #include "UnknownImpl.hpp"
+
+#include <new>
+
+#include <Windows.h>
+
+#include <objbase.h>
+#include <Unknwn.h>
+#include <winerror.h>
 
 namespace wicx {
   template<typename T>

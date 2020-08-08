@@ -1,10 +1,16 @@
-﻿#include "StdAfx.hpp"
-#include "tlgx/TLGDecoder.hpp"
+﻿#include "tlgx/TLGDecoder.hpp"
 #include "tlgx/TLGPropertyStore.hpp"
 #include "wicx/ClassFactory.hpp"
 #include "wicx/RegMan.hpp"
 
-#include <shlobj.h>
+#include <new>
+
+#include <Windows.h>
+
+#include <objbase.h>
+#include <ShlObj.h>
+#include <Unknwn.h>
+#include <winerror.h>
 
 HINSTANCE g_hinstDLL = NULL;
 
@@ -42,7 +48,7 @@ STDAPI DllUnregisterServer() {
   return S_OK;
 }
 
-STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, void** ppv) {
+STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID* ppv) {
   if (!ppv) {
     return E_INVALIDARG;
   }
