@@ -246,22 +246,23 @@ namespace tlgx {
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32"s, L"ThreadingModel"s, L"Apartment"s);
 
     // パターン登録
-    const char mask[] = "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff";
+    constexpr unsigned int PatternLength = 11;
+    const char mask[PatternLength + 1] = "\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff";
     regMan.Create(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns"s);
 
     regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0"s, L"Position"s, 0);
-    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0"s, L"Length"s, 10);
-    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0"s, L"Pattern"s, "TLG0.0\x00sds\x1a", 10);
-    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0"s, L"Mask"s, mask, 10);
+    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0"s, L"Length"s, PatternLength);
+    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0"s, L"Pattern"s, "TLG0.0\x00sds\x1a", PatternLength);
+    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\0"s, L"Mask"s, mask, PatternLength);
 
     regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\1"s, L"Position"s, 0);
-    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\1"s, L"Length"s, 10);
-    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\1"s, L"Pattern"s, "TLG5.0\x00raw\x1a", 10);
-    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\1"s, L"Mask"s, mask, 10);
+    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\1"s, L"Length"s, PatternLength);
+    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\1"s, L"Pattern"s, "TLG5.0\x00raw\x1a", PatternLength);
+    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\1"s, L"Mask"s, mask, PatternLength);
 
     regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\2"s, L"Position"s, 0);
-    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\2"s, L"Length"s, 10);
-    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\2"s, L"Pattern"s, "TLG6.0\x00raw\x1a", 10);
-    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\2"s, L"Mask"s, mask, 10);
+    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\2"s, L"Length"s, PatternLength);
+    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\2"s, L"Pattern"s, "TLG6.0\x00raw\x1a", PatternLength);
+    regMan.SetBytes(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Patterns\\2"s, L"Mask"s, mask, PatternLength);
   }
 } // namespace tlgx
