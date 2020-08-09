@@ -209,9 +209,11 @@
     <ClInclude Include="libtlg\tjs.h" />
     <ClInclude Include="libtlg\TLG.h" />
     <ClInclude Include="libtlg\tvpgl.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="tlgx\TLGDecoder.hpp" />
     <ClInclude Include="tlgx\TLGPropertyStore.hpp" />
     <ClInclude Include="tlgx\TLGStream.hpp" />
+    <ClInclude Include="Version.hpp" />
     <ClInclude Include="wicx\BaseDecoder.hpp" />
     <ClInclude Include="wicx\BasePropertyStore.hpp" />
     <ClInclude Include="wicx\ClassFactory.hpp" />
@@ -221,6 +223,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="tlg-wic-codec.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

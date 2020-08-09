@@ -6,6 +6,8 @@
 
 #include "../wicx/Util.hpp"
 
+#include "../Version.hpp"
+
 #include <memory>
 #include <mutex>
 #include <stdexcept>
@@ -239,10 +241,10 @@ namespace tlgx {
   void TLG_PropertyStore::Register(wicx::RegMan& regMan) {
     // see https://docs.microsoft.com/ja-jp/windows/win32/properties/prophand-reg-dist
 
-    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Version"s, L"1.0.0.1"s);
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Version"s, TLG_WIC_CODEC_VERSION);
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Date"s, _STR2CPPWSTR(__DATE__));
     regMan.SetDW(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"ManualSafeSave"s, 1);
-    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Author"s, L"Go Watanabe, SegaraRai"s);
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Author"s, TLG_WIC_CODEC_AUTHOR);
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"Description"s, L"TLG(kirikiri) Property Handler"s);
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"FriendlyName"s, L"TLG Property Handler"s);
 

@@ -93,8 +93,13 @@
     <ClInclude Include="wicx\Util.hpp">
       <Filter>wicx</Filter>
     </ClInclude>
+    <ClInclude Include="Version.hpp" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="tlg-wic-codec.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
 </Project>
