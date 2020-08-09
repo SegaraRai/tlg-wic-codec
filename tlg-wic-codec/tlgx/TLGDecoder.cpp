@@ -2,7 +2,7 @@
 
 #include "TLGStream.hpp"
 
-#include "../libtlg/tlg.h"
+#include "../libtlg/TLG.h"
 
 #include "../wicx/Util.hpp"
 
@@ -141,7 +141,7 @@ namespace tlgx {
 
   TLG_Decoder::~TLG_Decoder() {}
 
-  STDMETHODIMP TLG_Decoder::QueryCapability(IStream* pIStream, DWORD* pCapability) {
+  STDMETHODIMP TLG_Decoder::QueryCapability(IStream* pIStream, DWORD* pCapability) noexcept {
     if (!pIStream || !pCapability) {
       return E_INVALIDARG;
     }
@@ -188,7 +188,7 @@ namespace tlgx {
     return S_OK;
   }
 
-  STDMETHODIMP TLG_Decoder::Initialize(IStream* pIStream, WICDecodeOptions cacheOptions) {
+  STDMETHODIMP TLG_Decoder::Initialize(IStream* pIStream, WICDecodeOptions cacheOptions) noexcept {
     std::lock_guard lock(mutex);
 
     UNREFERENCED_PARAMETER(cacheOptions);

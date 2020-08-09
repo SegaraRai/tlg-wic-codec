@@ -14,6 +14,7 @@
 /* #include "tjsCommHead.h" */
 #include "tvpgl.h"
 
+#include <assert.h>
 #include <math.h>
 #include <memory.h>
 
@@ -131,7 +132,8 @@ void TVPTLG6InitGolombTable(void) {
         TVPTLG6GolombBitLengthTable[a++][n] = (char)i;
     }
     if (a != TVP_TLG6_GOLOMB_N_COUNT * 2 * 128)
-      *(char*)0 = 0; /* THIS MUST NOT BE EXECUETED! */
+      assert(false);
+      //*(char*)0 = 0; /* THIS MUST NOT BE EXECUETED! */
     /* (this is for compressed table data check) */
   }
 }

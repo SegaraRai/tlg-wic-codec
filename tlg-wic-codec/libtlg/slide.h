@@ -8,17 +8,17 @@
 constexpr int SLIDE_N = 4096;
 constexpr int SLIDE_M = 18 + 255;
 
-class SlideCompressor {
-  template<typename T, std::size_t S>
-  static constexpr std::array<T, S> CreateArray(T value) {
-    std::array<T, S> arr{};
-    // NOTE: std::array::fill is not constexpr in C++17
-    for (std::size_t i = 0; i < S; i++) {
-      arr[i] = value;
-    }
-    return arr;
+template<typename T, std::size_t S>
+static constexpr std::array<T, S> CreateArray(T value) {
+  std::array<T, S> arr{};
+  // NOTE: std::array::fill is not constexpr in C++17
+  for (std::size_t i = 0; i < S; i++) {
+    arr[i] = value;
   }
+  return arr;
+}
 
+class SlideCompressor {
   // スライド辞書法 圧縮クラス
   struct Chain {
     int Prev;

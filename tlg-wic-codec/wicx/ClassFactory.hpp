@@ -16,6 +16,8 @@ namespace wicx {
     UnknownImpl unknownImpl;
 
   public:
+    virtual ~ClassFactory() = default;
+
     // IUnknown interface
 
     STDMETHOD(QueryInterface)(REFIID riid, void** ppv) {

@@ -44,7 +44,7 @@ namespace wicx {
 
   // ----- IUnknown interface ---------------------------------------------------------------------------
 
-  STDMETHODIMP BaseFrameDecode::QueryInterface(REFIID iid, void** ppvObject) {
+  STDMETHODIMP BaseFrameDecode::QueryInterface(REFIID iid, void** ppvObject) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -71,11 +71,11 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP_(ULONG) BaseFrameDecode::AddRef() {
+  STDMETHODIMP_(ULONG) BaseFrameDecode::AddRef() noexcept {
     return m_unknownImpl.AddRef();
   }
 
-  STDMETHODIMP_(ULONG) BaseFrameDecode::Release() {
+  STDMETHODIMP_(ULONG) BaseFrameDecode::Release() noexcept {
     const auto count = m_unknownImpl.Release();
     if (count == 0) {
       delete this;
@@ -85,12 +85,12 @@ namespace wicx {
 
   // ----- IWICBitmapFrameDecode interface --------------------------------------------------------------
 
-  STDMETHODIMP BaseFrameDecode::GetMetadataQueryReader(IWICMetadataQueryReader** ppIMetadataQueryReader) {
+  STDMETHODIMP BaseFrameDecode::GetMetadataQueryReader(IWICMetadataQueryReader** ppIMetadataQueryReader) noexcept {
     UNREFERENCED_PARAMETER(ppIMetadataQueryReader);
     return WINCODEC_ERR_UNSUPPORTEDOPERATION;
   }
 
-  STDMETHODIMP BaseFrameDecode::GetColorContexts(UINT cCount, IWICColorContext** ppIColorContexts, UINT* pcActualCount) {
+  STDMETHODIMP BaseFrameDecode::GetColorContexts(UINT cCount, IWICColorContext** ppIColorContexts, UINT* pcActualCount) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -118,7 +118,7 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP BaseFrameDecode::GetThumbnail(IWICBitmapSource** ppIThumbnail) {
+  STDMETHODIMP BaseFrameDecode::GetThumbnail(IWICBitmapSource** ppIThumbnail) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -139,7 +139,7 @@ namespace wicx {
 
   // ----- IWICBitmapSource interface -------------------------------------------------------------------
 
-  STDMETHODIMP BaseFrameDecode::GetSize(UINT* puiWidth, UINT* puiHeight) {
+  STDMETHODIMP BaseFrameDecode::GetSize(UINT* puiWidth, UINT* puiHeight) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -150,7 +150,7 @@ namespace wicx {
     return m_bitmapSource->GetSize(puiWidth, puiHeight);
   }
 
-  STDMETHODIMP BaseFrameDecode::GetPixelFormat(WICPixelFormatGUID* pPixelFormat) {
+  STDMETHODIMP BaseFrameDecode::GetPixelFormat(WICPixelFormatGUID* pPixelFormat) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -161,7 +161,7 @@ namespace wicx {
     return m_bitmapSource->GetPixelFormat(pPixelFormat);
   }
 
-  STDMETHODIMP BaseFrameDecode::GetResolution(double* pDpiX, double* pDpiY) {
+  STDMETHODIMP BaseFrameDecode::GetResolution(double* pDpiX, double* pDpiY) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -172,7 +172,7 @@ namespace wicx {
     return m_bitmapSource->GetResolution(pDpiX, pDpiY);
   }
 
-  STDMETHODIMP BaseFrameDecode::CopyPalette(IWICPalette* pIPalette) {
+  STDMETHODIMP BaseFrameDecode::CopyPalette(IWICPalette* pIPalette) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -189,7 +189,7 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP BaseFrameDecode::CopyPixels(WICRect const* prc, UINT cbStride, UINT cbPixelsSize, BYTE* pbPixels) {
+  STDMETHODIMP BaseFrameDecode::CopyPixels(WICRect const* prc, UINT cbStride, UINT cbPixelsSize, BYTE* pbPixels) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -261,7 +261,7 @@ namespace wicx {
 
   // ----- IUnknown interface ---------------------------------------------------------------------------
 
-  STDMETHODIMP BaseDecoder::QueryInterface(REFIID iid, void** ppvObject) {
+  STDMETHODIMP BaseDecoder::QueryInterface(REFIID iid, void** ppvObject) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -282,11 +282,11 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP_(ULONG) BaseDecoder::AddRef() {
+  STDMETHODIMP_(ULONG) BaseDecoder::AddRef() noexcept {
     return m_unknownImpl.AddRef();
   }
 
-  STDMETHODIMP_(ULONG) BaseDecoder::Release() {
+  STDMETHODIMP_(ULONG) BaseDecoder::Release() noexcept {
     const auto count = m_unknownImpl.Release();
     if (count == 0) {
       delete this;
@@ -296,7 +296,7 @@ namespace wicx {
 
   // ----- IWICBitmapDecoder interface ------------------------------------------------------------------
 
-  STDMETHODIMP BaseDecoder::GetContainerFormat(GUID* pguidContainerFormat) {
+  STDMETHODIMP BaseDecoder::GetContainerFormat(GUID* pguidContainerFormat) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -309,7 +309,7 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP BaseDecoder::GetDecoderInfo(IWICBitmapDecoderInfo** ppIDecoderInfo) {
+  STDMETHODIMP BaseDecoder::GetDecoderInfo(IWICBitmapDecoderInfo** ppIDecoderInfo) noexcept {
     if (const auto result = EnsureFactory(); FAILED(result)) {
       return result;
     }
@@ -344,7 +344,7 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP BaseDecoder::CopyPalette(IWICPalette* pIPalette) {
+  STDMETHODIMP BaseDecoder::CopyPalette(IWICPalette* pIPalette) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -359,13 +359,13 @@ namespace wicx {
     return pIPalette->InitializeFromPalette(m_palette);
   }
 
-  STDMETHODIMP BaseDecoder::GetMetadataQueryReader(IWICMetadataQueryReader** ppIMetadataQueryReader) {
+  STDMETHODIMP BaseDecoder::GetMetadataQueryReader(IWICMetadataQueryReader** ppIMetadataQueryReader) noexcept {
     UNREFERENCED_PARAMETER(ppIMetadataQueryReader);
 
     return E_NOTIMPL;
   }
 
-  STDMETHODIMP BaseDecoder::GetPreview(IWICBitmapSource** ppIPreview) {
+  STDMETHODIMP BaseDecoder::GetPreview(IWICBitmapSource** ppIPreview) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -380,7 +380,7 @@ namespace wicx {
     return m_preview->QueryInterface(IID_IWICBitmapSource, reinterpret_cast<void**>(ppIPreview));
   }
 
-  STDMETHODIMP BaseDecoder::GetColorContexts(UINT cCount, IWICColorContext** ppIColorContexts, UINT* pcActualCount) {
+  STDMETHODIMP BaseDecoder::GetColorContexts(UINT cCount, IWICColorContext** ppIColorContexts, UINT* pcActualCount) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -408,7 +408,7 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP BaseDecoder::GetThumbnail(IWICBitmapSource** ppIThumbnail) {
+  STDMETHODIMP BaseDecoder::GetThumbnail(IWICBitmapSource** ppIThumbnail) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -423,7 +423,7 @@ namespace wicx {
     return m_thumbnail->QueryInterface(IID_IWICBitmapSource, reinterpret_cast<void**>(ppIThumbnail));
   }
 
-  STDMETHODIMP BaseDecoder::GetFrameCount(UINT* pCount) {
+  STDMETHODIMP BaseDecoder::GetFrameCount(UINT* pCount) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -436,7 +436,7 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP BaseDecoder::GetFrame(UINT index, IWICBitmapFrameDecode** ppIBitmapFrame) {
+  STDMETHODIMP BaseDecoder::GetFrame(UINT index, IWICBitmapFrameDecode** ppIBitmapFrame) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 

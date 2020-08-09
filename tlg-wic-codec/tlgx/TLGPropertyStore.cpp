@@ -2,7 +2,7 @@
 
 #include "TLGStream.hpp"
 
-#include "../libtlg/tlg.h"
+#include "../libtlg/TLG.h"
 
 #include "../wicx/Util.hpp"
 

@@ -31,7 +31,7 @@ namespace wicx {
 
   // ----- IUnknown interface ---------------------------------------------------------------------------
 
-  STDMETHODIMP BasePropertyStore::QueryInterface(REFIID iid, void** ppvObject) {
+  STDMETHODIMP BasePropertyStore::QueryInterface(REFIID iid, void** ppvObject) noexcept {
     if (!ppvObject) {
       return E_INVALIDARG;
     }
@@ -55,11 +55,11 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP_(ULONG) BasePropertyStore::AddRef() {
+  STDMETHODIMP_(ULONG) BasePropertyStore::AddRef() noexcept {
     return m_unknownImpl.AddRef();
   }
 
-  STDMETHODIMP_(ULONG) BasePropertyStore::Release() {
+  STDMETHODIMP_(ULONG) BasePropertyStore::Release() noexcept {
     const auto count = m_unknownImpl.Release();
     if (count == 0) {
       delete this;
@@ -69,7 +69,7 @@ namespace wicx {
 
   // ----- IInitializeWithStream interface ------------------------------------------------------------------
 
-  STDMETHODIMP BasePropertyStore::Initialize(IStream* pstream, DWORD grfMode) {
+  STDMETHODIMP BasePropertyStore::Initialize(IStream* pstream, DWORD grfMode) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::lock_guard lock(m_mutex);
 
@@ -107,7 +107,7 @@ namespace wicx {
 
   // ----- IPropertyStoreCapabilities interface ------------------------------------------------------------------
 
-  STDMETHODIMP BasePropertyStore::IsPropertyWritable(REFPROPERTYKEY key) {
+  STDMETHODIMP BasePropertyStore::IsPropertyWritable(REFPROPERTYKEY key) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -122,7 +122,7 @@ namespace wicx {
 
   // ----- IPropertyStore interface ------------------------------------------------------------------
 
-  STDMETHODIMP BasePropertyStore::Commit() {
+  STDMETHODIMP BasePropertyStore::Commit() noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -133,7 +133,7 @@ namespace wicx {
     return S_OK;
   }
 
-  STDMETHODIMP BasePropertyStore::GetAt(DWORD iProp, PROPERTYKEY* pKey) {
+  STDMETHODIMP BasePropertyStore::GetAt(DWORD iProp, PROPERTYKEY* pKey) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -144,7 +144,7 @@ namespace wicx {
     return m_pPropertyCache->GetAt(iProp, pKey);
   }
 
-  STDMETHODIMP BasePropertyStore::GetCount(DWORD* cProps) {
+  STDMETHODIMP BasePropertyStore::GetCount(DWORD* cProps) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -155,7 +155,7 @@ namespace wicx {
     return m_pPropertyCache->GetCount(cProps);
   }
 
-  STDMETHODIMP BasePropertyStore::GetValue(REFPROPERTYKEY key, PROPVARIANT* pv) {
+  STDMETHODIMP BasePropertyStore::GetValue(REFPROPERTYKEY key, PROPVARIANT* pv) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
@@ -166,7 +166,7 @@ namespace wicx {
     return m_pPropertyCache->GetValue(key, pv);
   }
 
-  STDMETHODIMP BasePropertyStore::SetValue(REFPROPERTYKEY key, REFPROPVARIANT propvar) {
+  STDMETHODIMP BasePropertyStore::SetValue(REFPROPERTYKEY key, REFPROPVARIANT propvar) noexcept {
     CheckMutex(m_mutex, __FUNCSIG__);
     std::shared_lock lock(m_mutex);
 
