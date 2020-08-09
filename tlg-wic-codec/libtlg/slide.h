@@ -5,8 +5,8 @@
 #  include <array>
 
 //---------------------------------------------------------------------------
-constexpr unsigned int SLIDE_N = 4096;
-constexpr unsigned int SLIDE_M = 18 + 255;
+constexpr int SLIDE_N = 4096;
+constexpr int SLIDE_M = 18 + 255;
 
 class SlideCompressor {
   template<typename T, std::size_t S>
