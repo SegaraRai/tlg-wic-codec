@@ -249,6 +249,6 @@ namespace tlgx {
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}"s, L"FriendlyName"s, L"TLG Property Handler"s);
 
     regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32"s, L""s, wicx::GetDLLFilepath());
-    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32"s, L"ThreadingModel"s, L"Apartment"s);
+    regMan.SetSZ(L"CLSID\\{509DC48F-345D-4506-9FE2-7BDF4AB21CE4}\\InprocServer32"s, L"ThreadingModel"s, L"Both"s);
   }
 } // namespace tlgx
