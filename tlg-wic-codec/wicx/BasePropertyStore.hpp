@@ -2,9 +2,10 @@
 
 #include "UnknownImpl.hpp"
 
+#include <shared_mutex>
+
 #include <Windows.h>
 
-#include <guiddef.h>
 #include <ObjIdl.h>
 #include <PropIdl.h>
 #include <propsys.h>
@@ -15,17 +16,19 @@ namespace wicx {
     : public IPropertyStore
     , public IPropertyStoreCapabilities
     , public IInitializeWithStream {
+    std::shared_mutex m_mutex;
     UnknownImpl m_unknownImpl;
-    IPropertyStoreCache* m_pPropertyCache;
+
+    IPropertyStoreCache* m_pPropertyCache = nullptr;
 
   protected:
-    GUID const m_CLSID_This;
+    void ReleaseMembersWithoutLock();
+    void ReleaseMembers();
 
-    virtual void ReleaseMembers();
     virtual HRESULT LoadProperties(IPropertyStoreCache* pPropertyCache, IStream* pStream) = 0;
 
   public:
-    BasePropertyStore(GUID Me);
+    BasePropertyStore();
     virtual ~BasePropertyStore();
 
     // IUnknown interface

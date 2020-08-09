@@ -3,6 +3,8 @@
 #include "../wicx/BasePropertyStore.hpp"
 #include "../wicx/RegMan.hpp"
 
+#include <mutex>
+
 #include <Windows.h>
 
 #include <ObjIdl.h>
@@ -11,7 +13,9 @@
 extern const GUID CLSID_TLG_PropertyStore;
 
 namespace tlgx {
-  class TLG_PropertyStore : public wicx::BasePropertyStore {
+  class TLG_PropertyStore final : public wicx::BasePropertyStore {
+    std::mutex mutex;
+
   protected:
     HRESULT LoadProperties(IPropertyStoreCache* pPropertyCache, IStream* pStream) override;
 

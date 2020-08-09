@@ -7,6 +7,7 @@
 #include "../wicx/Util.hpp"
 
 #include <memory>
+#include <mutex>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -50,11 +51,13 @@ namespace tlgx {
   // TLG_PropertyStore implementation
   //----------------------------------------------------------------------------------------
 
-  TLG_PropertyStore::TLG_PropertyStore() : BasePropertyStore(CLSID_TLG_PropertyStore) {}
+  TLG_PropertyStore::TLG_PropertyStore() : BasePropertyStore() {}
 
   TLG_PropertyStore::~TLG_PropertyStore() {}
 
   HRESULT TLG_PropertyStore::LoadProperties(IPropertyStoreCache* pPropertyCache, IStream* pStream) {
+    std::lock_guard lock(mutex);
+
     if (!pPropertyCache || !pStream) {
       return E_INVALIDARG;
     }

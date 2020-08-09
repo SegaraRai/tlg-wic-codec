@@ -1,5 +1,7 @@
 ﻿#include "BasePropertyStore.hpp"
 
+#include <shared_mutex>
+
 #include "Util.hpp"
 
 namespace wicx {
@@ -7,7 +9,7 @@ namespace wicx {
   // BasePropertyStore implementation
   //----------------------------------------------------------------------------------------
 
-  BasePropertyStore::BasePropertyStore(GUID Me) : m_pPropertyCache(nullptr), m_CLSID_This(Me) {
+  BasePropertyStore::BasePropertyStore() {
     // MessageBoxW(NULL, L"PropertyStore()", L"tlg_wic_codec", MB_OK);
   }
 
@@ -16,8 +18,15 @@ namespace wicx {
     ReleaseMembers();
   }
 
-  void BasePropertyStore::ReleaseMembers() {
+  void BasePropertyStore::ReleaseMembersWithoutLock() {
     WICX_RELEASE(m_pPropertyCache);
+  }
+
+  void BasePropertyStore::ReleaseMembers() {
+    CheckMutex(m_mutex, __FUNCSIG__);
+    std::lock_guard lock(m_mutex);
+
+    ReleaseMembersWithoutLock();
   }
 
   // ----- IUnknown interface ---------------------------------------------------------------------------
@@ -61,6 +70,9 @@ namespace wicx {
   // ----- IInitializeWithStream interface ------------------------------------------------------------------
 
   STDMETHODIMP BasePropertyStore::Initialize(IStream* pstream, DWORD grfMode) {
+    CheckMutex(m_mutex, __FUNCSIG__);
+    std::lock_guard lock(m_mutex);
+
     // return error if already initialized
     if (m_pPropertyCache) {
       return HRESULT_FROM_WIN32(ERROR_ALREADY_INITIALIZED);
@@ -77,7 +89,7 @@ namespace wicx {
     }
 
     // release PropertyCache (should not occur but in case)
-    ReleaseMembers();
+    ReleaseMembersWithoutLock();
 
     // create PropertyCache
     if (const auto result = PSCreateMemoryPropertyStore(IID_PPV_ARGS(&m_pPropertyCache)); FAILED(result)) {
@@ -85,18 +97,20 @@ namespace wicx {
     }
 
     // load props
-    const auto result = LoadProperties(m_pPropertyCache, pstream);
-
-    if (FAILED(result)) {
-      ReleaseMembers();
+    if (const auto result = LoadProperties(m_pPropertyCache, pstream); FAILED(result)) {
+      ReleaseMembersWithoutLock();
+      return result;
     }
 
-    return result;
+    return S_OK;
   }
 
   // ----- IPropertyStoreCapabilities interface ------------------------------------------------------------------
 
   STDMETHODIMP BasePropertyStore::IsPropertyWritable(REFPROPERTYKEY key) {
+    CheckMutex(m_mutex, __FUNCSIG__);
+    std::shared_lock lock(m_mutex);
+
     UNREFERENCED_PARAMETER(key);
 
     if (!m_pPropertyCache) {
@@ -109,6 +123,9 @@ namespace wicx {
   // ----- IPropertyStore interface ------------------------------------------------------------------
 
   STDMETHODIMP BasePropertyStore::Commit() {
+    CheckMutex(m_mutex, __FUNCSIG__);
+    std::shared_lock lock(m_mutex);
+
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
@@ -117,6 +134,9 @@ namespace wicx {
   }
 
   STDMETHODIMP BasePropertyStore::GetAt(DWORD iProp, PROPERTYKEY* pKey) {
+    CheckMutex(m_mutex, __FUNCSIG__);
+    std::shared_lock lock(m_mutex);
+
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
@@ -125,6 +145,9 @@ namespace wicx {
   }
 
   STDMETHODIMP BasePropertyStore::GetCount(DWORD* cProps) {
+    CheckMutex(m_mutex, __FUNCSIG__);
+    std::shared_lock lock(m_mutex);
+
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
@@ -133,6 +156,9 @@ namespace wicx {
   }
 
   STDMETHODIMP BasePropertyStore::GetValue(REFPROPERTYKEY key, PROPVARIANT* pv) {
+    CheckMutex(m_mutex, __FUNCSIG__);
+    std::shared_lock lock(m_mutex);
+
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
@@ -141,6 +167,9 @@ namespace wicx {
   }
 
   STDMETHODIMP BasePropertyStore::SetValue(REFPROPERTYKEY key, REFPROPVARIANT propvar) {
+    CheckMutex(m_mutex, __FUNCSIG__);
+    std::shared_lock lock(m_mutex);
+
     if (!m_pPropertyCache) {
       return E_UNEXPECTED;
     }
