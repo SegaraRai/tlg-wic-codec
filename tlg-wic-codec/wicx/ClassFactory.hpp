@@ -6,8 +6,8 @@
 
 #include <Windows.h>
 
-#include <objbase.h>
 #include <Unknwn.h>
+#include <objbase.h>
 #include <winerror.h>
 
 namespace wicx {

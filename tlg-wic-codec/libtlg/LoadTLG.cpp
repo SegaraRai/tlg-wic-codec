@@ -417,7 +417,12 @@ errend:
 //---------------------------------------------------------------------------
 // TLG loading handler
 //---------------------------------------------------------------------------
-static int TVPInternalLoadTLG(void* callbackdata, tTVPGraphicFormatCallback formatcallback, tTVPGraphicSizeCallback sizecallback, tTVPGraphicScanLineCallback scanlinecallback, tTJSBinaryStream* src, bool sds) {
+static int TVPInternalLoadTLG(void* callbackdata,
+                              tTVPGraphicFormatCallback formatcallback,
+                              tTVPGraphicSizeCallback sizecallback,
+                              tTVPGraphicScanLineCallback scanlinecallback,
+                              tTJSBinaryStream* src,
+                              bool sds) {
   // read header
   unsigned char mark[11];
   if (!src->ReadBuffer(mark, 11)) {

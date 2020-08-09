@@ -15,9 +15,9 @@
 
 #include <Windows.h>
 
-#include <guiddef.h>
 #include <ObjIdl.h>
 #include <PropIdl.h>
+#include <guiddef.h>
 #include <propkey.h>
 #include <propsys.h>
 #include <propvarutil.h>

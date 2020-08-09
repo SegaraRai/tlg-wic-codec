@@ -12,7 +12,7 @@ namespace wicx {
 
   public:
     Win32Error(DWORD error);
-    
+
     DWORD GetError() const;
   };
 
@@ -28,7 +28,7 @@ namespace wicx {
     std::deque<std::wstring> m_keys;
 
     void SetRaw(const std::wstring& keyName, const std::wstring& valueName, DWORD type, const void* value, std::size_t valueSize);
-    
+
   public:
     RegMan(Mode mode);
 

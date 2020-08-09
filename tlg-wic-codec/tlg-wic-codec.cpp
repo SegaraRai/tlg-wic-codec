@@ -7,9 +7,9 @@
 
 #include <Windows.h>
 
-#include <objbase.h>
 #include <ShlObj.h>
 #include <Unknwn.h>
+#include <objbase.h>
 #include <winerror.h>
 
 HINSTANCE g_hinstDLL = NULL;
@@ -20,9 +20,7 @@ STDAPI DllRegisterServer() {
 
     tlgx::TLG_Decoder::Register(regMan);
     tlgx::TLG_PropertyStore::Register(regMan);
-  } catch (wicx::Win32Error& error) {
-    return HRESULT_FROM_WIN32(error.GetError());
-  } catch (...) {
+  } catch (wicx::Win32Error& error) { return HRESULT_FROM_WIN32(error.GetError()); } catch (...) {
     return E_FAIL;
   }
 
@@ -39,9 +37,7 @@ STDAPI DllUnregisterServer() {
     tlgx::TLG_PropertyStore::Register(regMan);
 
     regMan.Unregister();
-  } catch (wicx::Win32Error& error) {
-    return HRESULT_FROM_WIN32(error.GetError());
-  } catch (...) {
+  } catch (wicx::Win32Error& error) { return HRESULT_FROM_WIN32(error.GetError()); } catch (...) {
     return E_FAIL;
   }
 

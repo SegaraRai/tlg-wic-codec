@@ -43,7 +43,7 @@ namespace wicx {
     const std::string str = funcName + ": x="s + (lockableExclusive ? "OK"s : "NG"s) + "\n"s;
     OutputDebugStringA(str.c_str());
   }
-  
+
   void CheckMutex(std::shared_mutex& mutex, const std::string& funcName) {
     using namespace std::literals;
 
