@@ -3,15 +3,9 @@
 #include "slide.h"
 //---------------------------------------------------------------------------
 SlideCompressor::SlideCompressor() {
-  S = 0;
-  for (int i = 0; i < SLIDE_N + SLIDE_M; i++)
-    Text[i] = 0;
-  for (int i = 0; i < 256 * 256; i++)
-    Map[i] = -1;
-  for (int i = 0; i < SLIDE_N; i++)
-    Chains[i].Prev = Chains[i].Next = -1;
-  for (int i = SLIDE_N - 1; i >= 0; i--)
+  for (int i = SLIDE_N - 1; i >= 0; i--) {
     AddMap(i);
+  }
 }
 //---------------------------------------------------------------------------
 SlideCompressor::~SlideCompressor() {}
@@ -162,27 +156,15 @@ void SlideCompressor::Encode(const unsigned char* in, long inlen, unsigned char*
 //---------------------------------------------------------------------------
 void SlideCompressor::Store() {
   S2 = S;
-  int i;
-  for (i = 0; i < SLIDE_N + SLIDE_M - 1; i++)
-    Text2[i] = Text[i];
-
-  for (i = 0; i < 256 * 256; i++)
-    Map2[i] = Map[i];
-
-  for (i = 0; i < SLIDE_N; i++)
-    Chains2[i] = Chains[i];
+  Text2 = Text;
+  Map2 = Map;
+  Chains2 = Chains;
 }
 //---------------------------------------------------------------------------
 void SlideCompressor::Restore() {
   S = S2;
-  int i;
-  for (i = 0; i < SLIDE_N + SLIDE_M - 1; i++)
-    Text[i] = Text2[i];
-
-  for (i = 0; i < 256 * 256; i++)
-    Map[i] = Map2[i];
-
-  for (i = 0; i < SLIDE_N; i++)
-    Chains[i] = Chains2[i];
+  Text = Text2;
+  Map = Map2;
+  Chains = Chains2;
 }
 //---------------------------------------------------------------------------
