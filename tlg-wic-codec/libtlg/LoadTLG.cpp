@@ -38,12 +38,13 @@ extern "C" void TVPCreateTable(void);
 //---------------------------------------------------------------------------
 // TLG5 loading handler
 //---------------------------------------------------------------------------
-int TVPLoadTLG5(void* callbackdata, tTVPGraphicSizeCallback sizecallback, tTVPGraphicScanLineCallback scanlinecallback, tTJSBinaryStream* src)
+int TVPLoadTLG5(void* callbackdata, tTVPGraphicFormatCallback formatcallback, tTVPGraphicSizeCallback sizecallback, tTVPGraphicScanLineCallback scanlinecallback, tTJSBinaryStream* src, bool sds)
 
 {
 
   unsigned char buf[1];
-  tjs_uint32 width, height, colors, blockheight;
+  unsigned int colors;
+  tjs_uint32 width, height, blockheight;
   if (!src->ReadBuffer(buf, 1)) {
     return false;
   }
@@ -56,6 +57,10 @@ int TVPLoadTLG5(void* callbackdata, tTVPGraphicSizeCallback sizecallback, tTVPGr
   if (colors != 3 && colors != 4) {
     // "Unsupported color type."
     return false;
+  }
+
+  if (formatcallback) {
+    formatcallback(callbackdata, sds ? TLGFormat::TLG50RAW_IN_TLG00SDS : TLGFormat::TLG50RAW, colors);
   }
 
   if (sizecallback && !sizecallback(callbackdata, width, height)) {
@@ -203,7 +208,7 @@ errend:
 //---------------------------------------------------------------------------
 // TLG6 loading handler
 //---------------------------------------------------------------------------
-int TVPLoadTLG6(void* callbackdata, tTVPGraphicSizeCallback sizecallback, tTVPGraphicScanLineCallback scanlinecallback, tTJSBinaryStream* src) {
+int TVPLoadTLG6(void* callbackdata, tTVPGraphicFormatCallback formatcallback, tTVPGraphicSizeCallback sizecallback, tTVPGraphicScanLineCallback scanlinecallback, tTJSBinaryStream* src, bool sds) {
   TVPCreateTable();
 
   unsigned char buf[4];
@@ -212,7 +217,7 @@ int TVPLoadTLG6(void* callbackdata, tTVPGraphicSizeCallback sizecallback, tTVPGr
     return TLG_ERROR;
   }
 
-  tjs_uint colors = buf[0]; // color component count
+  const unsigned int colors = buf[0]; // color component count
 
   if (colors != 1 && colors != 4 && colors != 3) {
     // "Unsupported color count"
@@ -241,6 +246,10 @@ int TVPLoadTLG6(void* callbackdata, tTVPGraphicSizeCallback sizecallback, tTVPGr
 
   if (!src->ReadI32LE(width) || !src->ReadI32LE(height) || !src->ReadI32LE(max_bit_length)) {
     return TLG_ERROR;
+  }
+
+  if (formatcallback) {
+    formatcallback(callbackdata, sds ? TLGFormat::TLG60RAW_IN_TLG00SDS : TLGFormat::TLG60RAW, colors);
   }
 
   // set destination size
@@ -408,7 +417,7 @@ errend:
 //---------------------------------------------------------------------------
 // TLG loading handler
 //---------------------------------------------------------------------------
-static int TVPInternalLoadTLG(void* callbackdata, tTVPGraphicSizeCallback sizecallback, tTVPGraphicScanLineCallback scanlinecallback, tTJSBinaryStream* src) {
+static int TVPInternalLoadTLG(void* callbackdata, tTVPGraphicFormatCallback formatcallback, tTVPGraphicSizeCallback sizecallback, tTVPGraphicScanLineCallback scanlinecallback, tTJSBinaryStream* src, bool sds) {
   // read header
   unsigned char mark[11];
   if (!src->ReadBuffer(mark, 11)) {
@@ -417,9 +426,9 @@ static int TVPInternalLoadTLG(void* callbackdata, tTVPGraphicSizeCallback sizeca
 
   // check for TLG raw data
   if (!memcmp("TLG5.0\x00raw\x1a", mark, 11)) {
-    return TVPLoadTLG5(callbackdata, sizecallback, scanlinecallback, src);
+    return TVPLoadTLG5(callbackdata, formatcallback, sizecallback, scanlinecallback, src, sds);
   } else if (!memcmp("TLG6.0\x00raw\x1a", mark, 11)) {
-    return TVPLoadTLG6(callbackdata, sizecallback, scanlinecallback, src);
+    return TVPLoadTLG6(callbackdata, formatcallback, sizecallback, scanlinecallback, src, sds);
   } else {
     return TLG_ERROR;
   }
@@ -455,7 +464,7 @@ static bool getSize(void* callbackdata, tjs_uint w, tjs_uint h) {
 
 bool TVPGetInfoTLG(tTJSBinaryStream* src, int* width, int* height) {
   SizeInfo size;
-  if (TVPLoadTLG(&size, getSize, NULL, NULL, src) == TLG_ABORT) {
+  if (TVPLoadTLG(&size, NULL, getSize, NULL, NULL, src) == TLG_ABORT) {
     if (width) {
       *width = size.width;
     }
@@ -467,7 +476,12 @@ bool TVPGetInfoTLG(tTJSBinaryStream* src, int* width, int* height) {
   return false;
 }
 
-int TVPLoadTLG(void* callbackdata, tTVPGraphicSizeCallback sizecallback, tTVPGraphicScanLineCallback scanlinecallback, std::unordered_map<std::string, std::string>* tags, tTJSBinaryStream* src) {
+int TVPLoadTLG(void* callbackdata,
+               tTVPGraphicFormatCallback formatcallback,
+               tTVPGraphicSizeCallback sizecallback,
+               tTVPGraphicScanLineCallback scanlinecallback,
+               std::unordered_map<std::string, std::string>* tags,
+               tTJSBinaryStream* src) {
   src->Seek(0, TJS_BS_SEEK_SET); // rewind
   // read header
   unsigned char mark[11];
@@ -578,12 +592,12 @@ int TVPLoadTLG(void* callbackdata, tTVPGraphicSizeCallback sizecallback, tTVPGra
     src->Seek(11 + 4, TJS_BS_SEEK_SET);
 
     // try to load TLG raw data
-    return TVPInternalLoadTLG(callbackdata, sizecallback, scanlinecallback, src);
+    return TVPInternalLoadTLG(callbackdata, formatcallback, sizecallback, scanlinecallback, src, true);
   } else {
     src->Seek(0, TJS_BS_SEEK_SET); // rewind
 
     // try to load TLG raw data
-    return TVPInternalLoadTLG(callbackdata, sizecallback, scanlinecallback, src);
+    return TVPInternalLoadTLG(callbackdata, formatcallback, sizecallback, scanlinecallback, src, false);
   }
 }
 

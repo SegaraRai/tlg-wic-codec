@@ -120,7 +120,7 @@ namespace tlgx {
 
       tCOMStream stream(pIStream);
 
-      if (const auto ret = TVPLoadTLG(this, sizeCallback, scanLineCallback, nullptr, &stream); ret != TLG_SUCCESS) {
+      if (const auto ret = TVPLoadTLG(this, nullptr, sizeCallback, scanLineCallback, nullptr, &stream); ret != TLG_SUCCESS) {
         clear();
         return E_FAIL;
       }
@@ -159,6 +159,7 @@ namespace tlgx {
 
       const auto result = TVPLoadTLG(
         &callbackCalled,
+        nullptr,
         [](void* callbackCalled, tjs_uint w, tjs_uint h) -> bool {
           UNREFERENCED_PARAMETER(w);
           UNREFERENCED_PARAMETER(h);

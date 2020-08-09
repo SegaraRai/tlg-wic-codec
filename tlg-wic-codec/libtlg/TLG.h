@@ -21,21 +21,33 @@
 // Graphic Loading Handler Type
 //---------------------------------------------------------------------------
 
-/*
-	callback type to inform the image's size.
-	call this once before TVPGraphicScanLineCallback.
-	return false can stop processing
-*/
+enum class TLGFormat {
+  TLG50RAW,
+  TLG60RAW,
+  TLG50RAW_IN_TLG00SDS,
+  TLG60RAW_IN_TLG00SDS,
+};
+
+/**
+ * callback type to inform the image's format.
+ * will be called once before tTVPGraphicSizeCallback.
+ */
+typedef void (*tTVPGraphicFormatCallback)(void* callbackdata, TLGFormat format, unsigned int colors);
+
+/**
+ * callback type to inform the image's size.
+ * will be called once before TVPGraphicScanLineCallback.
+ * decoding process can be aborted by returning false.
+ */
 typedef bool (*tTVPGraphicSizeCallback)(void* callbackdata, tjs_uint w, tjs_uint h);
 
-/*
-	callback type to ask the scanline buffer for the decoded image, per a line.
-	returning null can stop the processing.
-
-	passing of y=-1 notifies the scan line image had been written to the buffer that
-	was given by previous calling of TVPGraphicScanLineCallback. in this time,
-	this callback function must return NULL.
-*/
+/**
+ * callback type to ask the scanline buffer for the decoded image, per a line.
+ * decoding process can be aborted by returning nullptr.
+ *
+ * y = -1 means that the scan line image had been written to the buffer which is got from the previous TVPGraphicScanLineCallback call.
+ * in that case, the callback function must return nullptr.
+ */
 typedef void* (*tTVPGraphicScanLineCallback)(void* callbackdata, tjs_int y);
 
 //---------------------------------------------------------------------------
@@ -68,12 +80,14 @@ extern bool TVPGetInfoTLG(tTJSBinaryStream* src, int* width, int* height);
  * TLG画像のロード
  * @param dest 読み込み元ストリーム
  * @param callbackdata
+ * @param formatcallback フォーマット情報格納用コールバック
  * @param sizecallback サイズ情報格納用コールバック
  * @param scanlinecallback ロードデータ格納用コールバック
  * @param tags 読み込んだタグ情報の格納先
  * @return 0:成功 1:中断 -1:エラー
  */
 extern int TVPLoadTLG(void* callbackdata,
+                      tTVPGraphicFormatCallback formatcallback,
                       tTVPGraphicSizeCallback sizecallback,
                       tTVPGraphicScanLineCallback scanlinecallback,
                       std::unordered_map<std::string, std::string>* tags,

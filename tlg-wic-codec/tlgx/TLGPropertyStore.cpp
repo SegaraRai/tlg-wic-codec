@@ -75,6 +75,43 @@ namespace tlgx {
     // load TLG tags
     const auto result = TVPLoadTLG(
       pPropertyCache,
+      [](void* ptr, TLGFormat format, unsigned int colors) -> void {
+        auto pPropertyCache = static_cast<IPropertyStoreCache*>(ptr);
+
+        PROPVARIANT pv{};
+
+        // set bit depth
+        if (SUCCEEDED(InitPropVariantFromUInt32(colors * 8, &pv))) {
+          pPropertyCache->SetValueAndState(PKEY_Image_BitDepth, &pv, PSC_READONLY);
+          PropVariantClear(&pv);
+        }
+
+        {
+          // set image ID: "TLG" (unknown) / "TLG5.0 raw" / "TLG6.0 raw" / "TLG5.0 raw in TLG0.0 sds" / "TLG6.0 raw in TLG0.0 sds"
+          const wchar_t* imageID = L"TLG";
+          switch (format) {
+            case TLGFormat::TLG50RAW:
+              imageID = L"TLG5.0 raw";
+              break;
+
+            case TLGFormat::TLG60RAW:
+              imageID = L"TLG6.0 raw";
+              break;
+
+            case TLGFormat::TLG50RAW_IN_TLG00SDS:
+              imageID = L"TLG5.0 raw in TLG0.0 sds";
+              break;
+
+            case TLGFormat::TLG60RAW_IN_TLG00SDS:
+              imageID = L"TLG6.0 raw in TLG0.0 sds";
+              break;
+          }
+          if (SUCCEEDED(InitPropVariantFromString(imageID, &pv))) {
+            pPropertyCache->SetValueAndState(PKEY_Image_ImageID, &pv, PSC_READONLY);
+            PropVariantClear(&pv);
+          }
+        }
+      },
       [](void* ptr, unsigned int width, unsigned int height) -> bool {
         auto pPropertyCache = static_cast<IPropertyStoreCache*>(ptr);
 
@@ -102,22 +139,6 @@ namespace tlgx {
         if (SUCCEEDED(InitPropVariantFromUInt32(height, &pv))) {
           pPropertyCache->SetValueAndState(PKEY_Image_VerticalSize, &pv, PSC_READONLY);
           PropVariantClear(&pv);
-        }
-
-        // set bit depth: 32bit
-        if (SUCCEEDED(InitPropVariantFromUInt32(32, &pv))) {
-          pPropertyCache->SetValueAndState(PKEY_Image_BitDepth, &pv, PSC_READONLY);
-          PropVariantClear(&pv);
-        }
-
-        // set image ID: "TLG" (unknown) / "TLG5.0 raw" / "TLG6.0 raw" / "TLG5.0 raw in TLG0.0 sds" / "TLG6.0 raw in TLG0.0 sds"
-        // TODO
-        {
-          const wchar_t* imageID = L"TLG";
-          if (SUCCEEDED(InitPropVariantFromString(imageID, &pv))) {
-            pPropertyCache->SetValueAndState(PKEY_Image_ImageID, &pv, PSC_READONLY);
-            PropVariantClear(&pv);
-          }
         }
 
         // abort processing
