@@ -131,9 +131,10 @@ void TVPTLG6InitGolombTable(void) {
       for (j = 0; j < TVPTLG6GolombCompressed[n][i]; j++)
         TVPTLG6GolombBitLengthTable[a++][n] = (char)i;
     }
-    if (a != TVP_TLG6_GOLOMB_N_COUNT * 2 * 128)
+    if (a != TVP_TLG6_GOLOMB_N_COUNT * 2 * 128) {
       assert(false);
       //*(char*)0 = 0; /* THIS MUST NOT BE EXECUETED! */
+    }
     /* (this is for compressed table data check) */
   }
 }
