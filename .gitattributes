@@ -2,7 +2,6 @@
 
 *.bat       text eol=crlf
 *.cmd       text eol=crlf
-*.reg       text eol=crlf
 
 *.sln       text eol=crlf
 *.vcxproj   text eol=crlf
