@@ -1,7 +1,8 @@
 ﻿#pragma once
 
-#define _MAKE_VERSION_STRING(S) #S
-#define MAKE_VERSION_STRING(A, B, C, D) _MAKE_VERSION_STRING(A##.##B##.##C##.##D)
+#define __MAKE_VERSION_STRING(S) #S
+#define _MAKE_VERSION_STRING(A, B, C, D) __MAKE_VERSION_STRING(A##.##B##.##C##.##D)
+#define MAKE_VERSION_STRING(A, B, C, D) _MAKE_VERSION_STRING(A, B, C, D)
 
 #define TLG_WIC_CODEC_PRODUCTNAME "tlg-wic-codec"
 #define TLG_WIC_CODEC_FILENAME TLG_WIC_CODEC_PRODUCTNAME ".dll"
