@@ -232,18 +232,18 @@ namespace tlgx {
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SpecVersion"s, L"1.0.0.0"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"ColorManagementVersion"s, L"1.0.0.0"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"MimeTypes"s, L"image/x-tlg"s);
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"FileExtensions"s, L".tlg"s);
+    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"FileExtensions"s, L".TLG"s);
     regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SupportsAnimation"s, 0);
-    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SupportChromakey"s, 1);
+    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SupportChromakey"s, 0);
     regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SupportLossless"s, 1);
-    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SupportMultiframe"s, 1);
+    regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SupportMultiframe"s, 0);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"ContainerFormat"s, L"{280BF6EC-0A7B-4870-8AB0-FC4DE12D0B7B}"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Author"s, _STR2CPPWSTR(TLG_WIC_CODEC_AUTHOR));
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Description"s, L"TLG(kirikiri) Format Decoder"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"FriendlyName"s, L"TLG Decoder"s);
 
     regMan.Create(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Formats"s);
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Formats\\{6FDDC324-4E03-4BFE-B185-3D77768DC90F}"s, L""s, L""s);
+    regMan.Create(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\Formats\\{6FDDC324-4E03-4BFE-B185-3D77768DC90F}"s);
 
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32"s, L""s, wicx::GetDLLFilepath());
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}\\InprocServer32"s, L"ThreadingModel"s, L"Both"s);
