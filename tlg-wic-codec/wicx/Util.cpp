@@ -1,5 +1,7 @@
 ﻿#include "Util.hpp"
 
+#include "../Version.h"
+
 #include <mutex>
 #include <shared_mutex>
 #include <stdexcept>
@@ -16,7 +18,7 @@ namespace wicx {
       return dllFilePath;
     }
 
-    HMODULE hModule = g_hinstDLL ? reinterpret_cast<HMODULE>(g_hinstDLL) : GetModuleHandleW(L"tlg-wic-codec.dll");
+    HMODULE hModule = g_hinstDLL ? reinterpret_cast<HMODULE>(g_hinstDLL) : GetModuleHandleW(_STR2WSTR(TLG_WIC_CODEC_FILENAME));
     if (!hModule) {
       throw std::runtime_error("failed to get hModule");
     }

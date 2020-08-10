@@ -176,7 +176,7 @@ namespace tlgx {
 
     /*
 		// set tags
-		// commented out because the tags of some TLG files are jsut binary...
+		// commented out because the tags of some TLG files are not texts...
 		try {
 			if (!tagMap.empty()) {
 				std::vector<std::wstring> tags;

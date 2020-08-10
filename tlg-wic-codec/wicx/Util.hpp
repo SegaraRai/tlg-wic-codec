@@ -6,6 +6,9 @@
 
 #include <Windows.h>
 
+#define __STR2WSTR(str) L##str
+#define _STR2WSTR(str) __STR2WSTR(str)
+
 #define __STR2CPPWSTR(str) L##str##s
 #define _STR2CPPWSTR(str) __STR2CPPWSTR(str)
 
