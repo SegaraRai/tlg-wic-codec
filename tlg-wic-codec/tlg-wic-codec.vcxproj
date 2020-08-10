@@ -213,7 +213,7 @@
     <ClInclude Include="tlgx\TLGDecoder.hpp" />
     <ClInclude Include="tlgx\TLGPropertyStore.hpp" />
     <ClInclude Include="tlgx\TLGStream.hpp" />
-    <ClInclude Include="Version.hpp" />
+    <ClInclude Include="Version.h" />
     <ClInclude Include="wicx\BaseDecoder.hpp" />
     <ClInclude Include="wicx\BasePropertyStore.hpp" />
     <ClInclude Include="wicx\ClassFactory.hpp" />

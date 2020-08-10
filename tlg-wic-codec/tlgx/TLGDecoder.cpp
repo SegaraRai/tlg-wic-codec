@@ -6,7 +6,7 @@
 
 #include "../wicx/Util.hpp"
 
-#include "../Version.hpp"
+#include "../Version.h"
 
 #include <memory>
 #include <mutex>
@@ -227,7 +227,7 @@ namespace tlgx {
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"CLSID"s, L"{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s);
     regMan.SetSZ(L"CLSID\\{7ED96837-96F0-4812-B211-F13C24117ED3}\\Instance\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"FriendlyName"s, L"TLG Decoder"s);
 
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Version"s, TLG_WIC_CODEC_VERSION);
+    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Version"s, _STR2CPPWSTR(TLG_WIC_CODEC_VERSION));
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Date"s, _STR2CPPWSTR(__DATE__));
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SpecVersion"s, L"1.0.0.0"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"ColorManagementVersion"s, L"1.0.0.0"s);
@@ -238,7 +238,7 @@ namespace tlgx {
     regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SupportLossless"s, 1);
     regMan.SetDW(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"SupportMultiframe"s, 1);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"ContainerFormat"s, L"{280BF6EC-0A7B-4870-8AB0-FC4DE12D0B7B}"s);
-    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Author"s, TLG_WIC_CODEC_AUTHOR);
+    regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Author"s, _STR2CPPWSTR(TLG_WIC_CODEC_AUTHOR));
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"Description"s, L"TLG(kirikiri) Format Decoder"s);
     regMan.SetSZ(L"CLSID\\{05103AD4-28F3-4229-A9A3-2928A8CE5E9A}"s, L"FriendlyName"s, L"TLG Decoder"s);
 

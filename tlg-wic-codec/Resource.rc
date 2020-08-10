@@ -2,6 +2,8 @@
 //
 #include "resource.h"
 
+#include "Version.h"
+
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -13,11 +15,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 日本語 (日本) resources
+// English (United States) resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
-LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
-#pragma code_page(932)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -44,15 +46,14 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION TLG_WIC_CODEC_VERSION_MAJOR,TLG_WIC_CODEC_VERSION_MINOR,TLG_WIC_CODEC_VERSION_PATCH,TLG_WIC_CODEC_VERSION_BUILD
+ PRODUCTVERSION TLG_WIC_CODEC_VERSION_MAJOR,TLG_WIC_CODEC_VERSION_MINOR,TLG_WIC_CODEC_VERSION_PATCH,TLG_WIC_CODEC_VERSION_BUILD
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -67,14 +68,14 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "Go Watanabe, SegaraRai"
-            VALUE "FileDescription", "KIRIKIRI TLG codecs for Windows Imaging Component"
-            VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "tlg-wic-codec.dll"
-            VALUE "LegalCopyright", "Copyright (C) 2020 Go Watanabe, SegaraRai"
-            VALUE "OriginalFilename", "tlg-wic-codec.dll"
-            VALUE "ProductName", "tlg-wic-codec"
-            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "CompanyName", TLG_WIC_CODEC_AUTHOR
+            VALUE "FileDescription", TLG_WIC_CODEC_DESCRIPTION
+            VALUE "FileVersion", TLG_WIC_CODEC_VERSION
+            VALUE "InternalName", TLG_WIC_CODEC_FILENAME
+            VALUE "LegalCopyright", TLG_WIC_CODEC_COPYRIGHT
+            VALUE "OriginalFilename", TLG_WIC_CODEC_FILENAME
+            VALUE "ProductName", TLG_WIC_CODEC_PRODUCTNAME
+            VALUE "ProductVersion", TLG_WIC_CODEC_VERSION
         END
     END
     BLOCK "VarFileInfo"
@@ -83,7 +84,7 @@ BEGIN
     END
 END
 
-#endif    // 日本語 (日本) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

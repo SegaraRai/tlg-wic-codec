@@ -1,9 +1,9 @@
-//{{NO_DEPENDENCIES}}
+ï»¿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by Resource.rc
 
-// V‚µ‚¢ƒIƒuƒWƒFƒNƒg‚ÌŸ‚ÌŠù’è’l
-// 
+// æ–°ã—ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ¬¡ã®æ—¢å®šå€¤
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        101
