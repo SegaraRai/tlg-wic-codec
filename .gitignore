@@ -1,7 +1,9 @@
-Debug-Win32
-Debug-x64
-Release-Win32
-Release-x64
+Debug-Win32/
+Debug-x64/
+Release-Win32/
+Release-x64/
+
+package/
 *.zip
 
 ## Ignore Visual Studio temporary files, build results, and

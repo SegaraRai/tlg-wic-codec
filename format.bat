@@ -1,4 +1,4 @@
-@echo off
+@ECHO OFF
 
 CD "%~dp0"
 CD tlg-wic-codec
